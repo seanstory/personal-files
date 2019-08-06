@@ -6,3 +6,4 @@ alias gitl="git log --branches --graph --pretty=format:'%Cred%h%Creset -%C(yello
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export MAVEN_OPTS='-Xmx3g'
 export PATH="$PATH:$HOME/bin"
+export GRATER_PASSWORD="u{R+-EJ\ws'_%/ti:2$'M="
