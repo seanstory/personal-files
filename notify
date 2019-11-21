@@ -1,0 +1,4 @@
+#!/bin/bash
+COMMAND_CALLED=$@
+$COMMAND_CALLED
+/usr/bin/osascript -e "display notification \"$COMMAND_CALLED\" with title \"Terminal Command Completed\""
