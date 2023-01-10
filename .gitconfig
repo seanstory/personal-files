@@ -1,8 +1,17 @@
+[user]
+	name = Sean Story
+	email = sean.j.story@gmail.com
+[push]
+	default = simple
 [alias]
     prstash = "!f(){ \
-                   git checkout master        && \
+                   git checkout main        && \
                    git fetch origin           && \
                    (git branch -D pr/$1 || :) && \
                    git fetch origin refs/pull-requests/$1/merge:pr/$1 && \
                    git checkout pr/$1; \
                };f"
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
