@@ -1,8 +1,9 @@
 [user]
 	name = Sean Story
-	email = sean.j.story@gmail.com
+	email = sean.story@elastic.co
 [push]
 	default = simple
+	autoSetupRemote = true
 [alias]
     prstash = "!f(){ \
                    git checkout main        && \
@@ -13,5 +14,11 @@
                };f"
 [init]
 	defaultBranch = main
+	templatedir = ~/.git-templates
 [pull]
 	rebase = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
