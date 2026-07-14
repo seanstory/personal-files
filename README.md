@@ -8,4 +8,4 @@ Just my settings files, the way I like them
 
 Run `make resume` to build `resume.pdf` from sources in `resume/`.
 
-**Requires:** Chromium or Chrome. If not found on PATH, `make resume` will install Chromium automatically via Homebrew.
+**Requires:** Chrome or Chromium. Checks for `chromium` or `google-chrome` on PATH, then falls back to `/Applications/Google Chrome.app` on macOS.
