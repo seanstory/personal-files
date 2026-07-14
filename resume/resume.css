@@ -1,0 +1,89 @@
+@page {
+  size: letter;
+  margin: 0.75in 0.75in 0.75in 0.75in;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 11pt;
+  color: #111;
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: 20pt;
+  letter-spacing: 0.02em;
+}
+
+h2 {
+  font-size: 11pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid #111;
+  margin-top: 0.5em;
+  margin-bottom: 0.3em;
+  padding-bottom: 0.1em;
+}
+
+h3 {
+  font-size: 11pt;
+  font-weight: bold;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.6em;
+}
+
+.header-left h1 {
+  margin-bottom: 0.1em;
+}
+
+.header-right {
+  text-align: right;
+  font-size: 10pt;
+}
+
+.section {
+  margin-bottom: 0.7em;
+}
+
+.entry {
+  margin-bottom: 0.5em;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.entry-title {
+  font-weight: bold;
+}
+
+.entry-date {
+  font-size: 10pt;
+  color: #444;
+  white-space: nowrap;
+}
+
+ul {
+  padding-left: 1.2em;
+  margin-top: 0.2em;
+}
+
+li {
+  margin-bottom: 0.1em;
+}
+
+p {
+  margin-top: 0.2em;
+}
