@@ -1,0 +1,3 @@
+#!/bin/bash
+# Start an interactive login shell - this will source .profile automatically
+exec /bin/bash -l -i
