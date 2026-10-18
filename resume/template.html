@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+  Resume template — for agents generating a tailored resume.
+
+  Inputs:   resume/pool.yaml (all facts), a job description, this file.
+  Example:  resume/resume.html is this template filled in for a general
+            application. Match its tone, density, and length.
+  Output:   resume/out/<name>.html (gitignored), then
+            `make resume HTML=resume/out/<name>.html` to print a PDF.
+
+  Rules:
+  - One US-letter page. Cut bullets before shrinking fonts or margins.
+  - Keep this structure and these CSS classes; don't add inline styles.
+  - Every claim must trace to a pool entry. Reword freely to fit the job,
+    but never overstate what the entry's description supports.
+  - Name, contact, role titles, employers, dates, and education come from
+    the pool verbatim.
+  - Emphasize what the job cares about without turning a minor thread into
+    the headline; the reader should still see the full career arc.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{profile.name}} — Resume</title>
+  <!-- Path is relative to resume/out/. -->
+  <link rel="stylesheet" href="../resume.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>{{profile.name}}</h1>
+      <!-- One of profile.headlines, or a close variant suited to the job. -->
+      <div class="tagline">{{headline}}</div>
+    </div>
+    <div class="header-right">
+      {{profile.contact.email}}<br>
+      {{profile.contact.linkedin}}<br>
+      {{profile.contact.github}}<br>
+      {{profile.location}}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Summary</h2>
+    <!-- 2–4 sentences. Start from profile.summaries; tilt toward the job. -->
+    <p>{{summary}}</p>
+  </div>
+
+  <div class="section">
+    <h2>Skills</h2>
+    <!-- 3–4 rows. Pick categories and items from `skills` most relevant to
+         the job; prefer skills with evidence. Order items by relevance. -->
+    <div class="skills-grid">
+      <div><strong>{{category}}:</strong> {{skill}}, {{skill}}, {{skill}}</div>
+      <!-- …repeat per category… -->
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Experience</h2>
+
+    <!-- One .entry per role in `roles`, newest first. Every role appears,
+         even if it gets a single bullet. Usually 1–5 bullets per role;
+         give more to roles that best match the job. -->
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">{{role.title}} — {{role.employer}}</span>
+        <span class="entry-date">{{role.dates.start | Mon YYYY}} – {{role.dates.end | Mon YYYY or "Present"}}</span>
+      </div>
+      <!-- Omit when role.team is null. -->
+      <div class="entry-subtitle">{{role.team}}</div>
+      <ul>
+        <!-- One bullet per chosen accomplishment for this role, strongest
+             match first. Lead with the outcome; one or two lines each. -->
+        <li>{{bullet}}</li>
+      </ul>
+    </div>
+    <!-- …repeat per role… -->
+
+  </div>
+
+  <!-- Optional sections: include only when they strengthen this application
+       and the page has room. Use the same .section/.entry markup.
+       e.g. <h2>Projects</h2> from `projects`, <h2>Publications</h2> from
+       `publications`. In the general resume these live as bullets instead. -->
+
+  <div class="section">
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">{{education.institution}}</span>
+        <span class="entry-date">{{education.dates.start}} – {{education.dates.end}}</span>
+      </div>
+      <!-- Degrees joined with "&nbsp;·&nbsp;", e.g.
+           "M.S. Computer Science (4.0 GPA)". -->
+      <div>{{degree}} &nbsp;·&nbsp; {{degree}}</div>
+    </div>
+  </div>
+
+</body>
+</html>

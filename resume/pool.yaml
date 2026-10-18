@@ -1,0 +1,428 @@
+# Sean Story — accomplishment pool
+#
+# The source of truth for every resume variant. Think of it as a 100-page
+# resume: professional and informative, but deliberately broader than any
+# single application, and not polished for any particular audience.
+#
+# PUBLIC-SAFE ONLY. This file lives in a public repo. Do not add customer
+# names, unreleased features, internal-only metrics, or anything else that
+# isn't OK to share with a recruiter.
+#
+# Conventions:
+#   - Dates are YYYY-MM. `end: null` means present.
+#   - `id`s are kebab-case and stable; other entries reference them.
+#   - `description` is plain factual prose (a sentence to a paragraph), not
+#     finished resume wording. Agents write the bullets.
+#   - `tags` mix technologies (java, spark, ruby) and themes (leadership,
+#     open-source, ai-agents). Prefer reusing existing tags.
+
+profile:
+  name: Sean Story
+  location: Nashville, TN
+  contact:
+    email: sean.j.story@gmail.com
+    linkedin: linkedin.com/in/sestory
+    github: github.com/seanstory
+  headlines:
+    - Principal Software Engineer
+  summaries:
+    - id: general
+      text: >
+        Principal Software Engineer with 12+ years building data ingestion
+        platforms, search infrastructure, and AI agent tooling at scale. Known
+        for taking new initiatives from zero to shipped, open-sourcing internal
+        tools, and driving cross-team alignment on ambiguous problems. Currently
+        building context infrastructure for agentic AI systems at Elastic.
+
+roles:
+  - id: elastic-principal-context-engine
+    employer: Elastic
+    title: Principal Software Engineer
+    team: Context Engine team (founding member) · Elasticsearch and Platform org
+    dates: { start: 2026-06, end: null }
+    description: >
+      Founding member of the Context Engine team, a sub-team of Elastic's
+      Agents and Context group.
+
+  - id: elastic-tech-lead-workplace-ai
+    employer: Elastic
+    title: Technical Lead
+    team: Workplace AI / Agent Builder / Extract & Transform
+    dates: { start: 2025-02, end: 2026-06 }
+    description: >
+      Technical lead across Workplace AI, Agent Builder, and Extract & Transform,
+      focused on bringing Elastic's data connectors into the agentic AI product
+      surface.
+
+  - id: elastic-principal-search-ingestion
+    employer: Elastic
+    title: Principal Software Engineer
+    team: Search Ingestion — Web Crawler, Connectors, and Document Extraction
+    dates: { start: 2022-05, end: 2025-02 }
+    description: >
+      Principal engineer for Elastic's search ingestion tooling: the Web Crawler,
+      Connectors, and document extraction.
+
+  - id: elastic-senior-connectors
+    employer: Elastic
+    title: Senior Software Engineer
+    team: Connectors Working Group (founding member) · Workplace Search
+    dates: { start: 2020-11, end: 2022-05 }
+    description: >
+      Founding member of the Connectors Working Group within Workplace Search.
+
+  - id: elastic-sde2-workplace-search
+    employer: Elastic
+    title: Software Development Engineer II
+    team: Enterprise Search — Workplace Search
+    dates: { start: 2019-08, end: 2020-11 }
+    description: >
+      Engineer on Elastic Workplace Search, part of the Enterprise Search
+      product line.
+
+  - id: dr-senior
+    employer: Digital Reasoning
+    title: Senior Software Engineer
+    team: null
+    dates: { start: 2016-03, end: 2019-08 }
+    description: >
+      Senior engineer building data platforms for financial-surveillance
+      customers.
+
+  - id: dr-associate
+    employer: Digital Reasoning
+    title: Associate Software Engineer
+    team: null
+    dates: { start: 2014-05, end: 2016-03 }
+    description: >
+      Early-career engineer on Digital Reasoning's Synthesys platform, cloud
+      offerings, and ETL infrastructure.
+
+accomplishments:
+  # --- Elastic: Context Engine -------------------------------------------
+  - id: context-engine-founding
+    role: elastic-principal-context-engine
+    dates: { start: 2026-06, end: null }
+    tags: [ai-agents, context-retrieval, elasticsearch, llm, founding-member, kibana, typescript]
+    description: >
+      Founding member of the Context Engine team, building infrastructure to
+      reduce token consumption in agentic workflows by providing structured,
+      permissioned context to LLMs via Elasticsearch.
+
+  # --- Elastic: Workplace AI / Agent Builder -----------------------------
+  - id: agent-builder-connectors
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-02, end: 2026-06 }
+    tags: [ai-agents, connectors, agent-tools, kibana, typescript, integrations, architecture]
+    description: >
+      Integrated 40+ data connectors into Elastic's Agent Builder product as
+      first-class agent tools. The work included connector lifecycle
+      management, attachment handling, and a sub-action execution layer.
+
+  - id: retrieval-tool-accuracy
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-02, end: 2026-06 }
+    tags: [ai-agents, retrieval, evaluation, relevance, llm, metrics]
+    description: >
+      Improved the accuracy of a retrieval tool used in production AI workflows
+      from 77% to over 90% through systematic evaluation and iteration.
+
+  - id: connector-oauth-and-cli
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-02, end: 2026-06 }
+    tags: [connectors, oauth, security, developer-tooling, cli, architecture, enterprise]
+    description: >
+      Architected and expanded the connector ecosystem with OAuth Authorization
+      Code flows (Microsoft Teams, ServiceNow, Notion) and a connector creation
+      CLI, accelerating enterprise onboarding.
+
+  - id: mcp-all-hands-and-blog
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-02, end: 2026-06 }
+    tags: [mcp, ai-agents, public-speaking, writing, evangelism]
+    description: >
+      Hosted a Model Context Protocol (MCP) session at Elastic's Engineering All
+      Hands, and published a blog post on agentic AI tooling for Elasticsearch.
+    related: [pub-mcp-all-hands, pub-agentic-tooling-blog]
+
+  # --- Elastic: Search Ingestion -----------------------------------------
+  - id: agentless-connectors
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [connectors, python, elastic-agent, leadership, cross-team, initiative-lead]
+    description: >
+      Led the Agentless Connectors initiative, running Python connectors inside
+      Elastic Agent. Took it from proof of concept, through cross-functional
+      alignment, to delivery.
+
+  - id: customer-pilot-rescue
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [customer-facing, enterprise, incident-response, stabilization, support-handoff, leadership]
+    description: >
+      Rescued an at-risk enterprise customer pilot from a "no go" decision.
+      Stabilized the deployment, implemented critical fixes, and led the handoff
+      from engineering to Elastic Support.
+
+  - id: open-source-crawler-and-extraction
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [open-source, ruby, python, tika, web-crawler, document-extraction]
+    description: >
+      Open-sourced the Elastic Web Crawler, a Ruby-based crawler with 5+ years
+      of internal development, and the Data Extraction Service, a Python/Tika
+      service for parsing binary documents, making both available to the
+      Elastic community.
+    related: [proj-elastic-crawler, proj-data-extraction-service]
+
+  - id: connectors-ingest-pipelines
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [connectors, ingest-pipelines, machine-learning, elasticsearch, filtering]
+    description: >
+      Shipped custom ingest pipeline support for Connectors, enabling ML
+      inference at ingest time, along with connector filtering rules.
+
+  - id: elser-early-integration
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [elser, machine-learning, semantic-search, embeddings, cross-team, quality]
+    description: >
+      Drove early cross-team integration with ELSER, Elastic's in-house sparse
+      embedding model, surfacing critical bugs before GA.
+
+  - id: solo-delivery-after-layoff
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [ownership, delivery, resilience]
+    description: >
+      Inherited a mid-cycle project after a teammate's layoff and delivered it
+      solo, on schedule.
+
+  # --- Elastic: Connectors Working Group ---------------------------------
+  - id: connectors-2-architecture
+    role: elastic-senior-connectors
+    dates: { start: 2020-11, end: 2022-05 }
+    tags: [connectors, architecture, api-design, project-planning, leadership, cross-team]
+    description: >
+      Architected Connectors 2.0. Defined the phased project plan, drove the
+      proof of concept that became the foundation for the team's API design,
+      and coordinated delivery across 8+ engineers and multiple stakeholders.
+
+  - id: connectors-sdk-open-source
+    role: elastic-senior-connectors
+    dates: { start: 2020-11, end: 2022-05 }
+    tags: [open-source, connectors, sdk, ruby, developer-experience, community]
+    description: >
+      Migrated the Connectors SDK out of the enterprise-search monorepo into a
+      standalone open-source repository, growing active contributors from one
+      to the full team.
+    related: [proj-connectors-sdk]
+
+  # --- Elastic: Workplace Search -----------------------------------------
+  - id: workplace-search-contributions
+    role: elastic-sde2-workplace-search
+    dates: { start: 2019-08, end: 2020-11 }
+    tags: [search, full-text-search, enterprise, ruby, rails, elasticsearch]
+    description: >
+      Contributed to Elastic Workplace Search, which delivers real-time
+      full-text search across millions of enterprise documents from disparate
+      content sources.
+
+  - id: query-refinement-patent
+    role: elastic-sde2-workplace-search
+    dates: { start: 2019-08, end: 2020-11 }
+    tags: [patent, search, relevance, invention]
+    description: >
+      Co-inventor on a U.S. patent for automatic search query refinement using
+      generated keyword triggers.
+    related: [pub-patent-12505115]
+
+  - id: workplace-search-jvm-client
+    role: elastic-sde2-workplace-search
+    dates: { start: 2019-08, end: 2020-11 }
+    tags: [open-source, java, jvm, api-client, sdk]
+    description: >
+      Built and open-sourced a JVM client for the Workplace Search API.
+    related: [proj-workplace-search-jvm-client]
+
+  # --- Digital Reasoning: Senior -----------------------------------------
+  - id: dr-data-reconciliation
+    role: dr-senior
+    dates: { start: 2016-03, end: 2019-08 }
+    tags: [hadoop, spark, sql, big-data, architecture, compliance, financial-services, scale]
+    description: >
+      Architected a Data Reconciliation platform that processed hundreds of
+      millions of event logs with Hadoop, Spark, and SQL to produce audit
+      compliance reports for financial-surveillance customers.
+
+  - id: dr-gdpr-deletion
+    role: dr-senior
+    dates: { start: 2016-03, end: 2019-08 }
+    tags: [gdpr, privacy, compliance, elasticsearch, oozie, hadoop, workflow-design]
+    description: >
+      Designed a GDPR deletion workflow that translated customer retention
+      policies into Elasticsearch queries, which drove Oozie/Hadoop jobs for
+      targeted message purging.
+
+  - id: dr-streaming-ingestion
+    role: dr-senior
+    dates: { start: 2016-03, end: 2019-08 }
+    tags: [streaming, ingestion, etl, architecture, surveillance, time-to-value]
+    description: >
+      Architected a streaming ingestion pipeline for email and chat surveillance
+      data, dramatically cutting the time between data delivery and
+      analyst-ready insights.
+
+  - id: dr-tech-lead-scrum-master
+    role: dr-senior
+    dates: { start: 2016-03, end: 2019-08 }
+    tags: [leadership, tech-lead, scrum, agile, team-of-8]
+    description: >
+      Selected as Tech Lead for the flagship Conduct Surveillance team, and
+      served as Scrum Master for a team of eight.
+
+  # --- Digital Reasoning: Associate --------------------------------------
+  - id: dr-synthesys-cloud
+    role: dr-associate
+    dates: { start: 2014-05, end: 2016-03 }
+    tags: [aws, aws-marketplace, govcloud, cloud, packaging]
+    description: >
+      Developed the company's AWS Marketplace offering, Synthesys Cloud,
+      including pioneering work in AWS GovCloud.
+
+  - id: dr-spark-etl
+    role: dr-associate
+    dates: { start: 2014-05, end: 2016-03 }
+    tags: [spark, etl, distributed-systems, client-server, architecture, performance]
+    description: >
+      Used Apache Spark to accelerate the in-house ETL platform, then evolved it
+      into a distributed client/server architecture that supported centralized
+      control over multiple concurrent processing nodes.
+
+projects:
+  - id: proj-elastic-crawler
+    name: Elastic Open Web Crawler
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [open-source, ruby, web-crawler]
+    links: [https://github.com/elastic/crawler]
+    description: >
+      Ruby-based web crawler for ingesting website content into Elasticsearch,
+      open-sourced after 5+ years of internal development.
+
+  - id: proj-data-extraction-service
+    name: Data Extraction Service
+    dates: { start: 2022-05, end: 2025-02 }
+    tags: [open-source, python, tika, document-extraction]
+    links: [https://github.com/elastic/data-extraction-service]
+    description: >
+      Python/Tika service for extracting text from binary documents, used by
+      Elastic's connectors.
+
+  - id: proj-connectors-sdk
+    name: Elastic Connectors SDK
+    dates: { start: 2020-11, end: 2022-05 }
+    tags: [open-source, connectors, sdk]
+    description: >
+      SDK for building Elastic content connectors, migrated from the
+      enterprise-search monorepo into its own open-source repository.
+
+  - id: proj-workplace-search-jvm-client
+    name: Workplace Search JVM client
+    dates: { start: 2019-08, end: 2020-11 }
+    tags: [open-source, java, jvm, api-client]
+    description: >
+      Open-source JVM client library for the Workplace Search API.
+
+publications:
+  # kind: talk | blog | patent | paper
+  - id: pub-patent-12505115
+    kind: patent
+    title: Automatic search query refinement using generated keyword triggers
+    identifier: U.S. Patent 12,505,115
+    dates: { awarded: 2025 }
+    tags: [patent, search, relevance]
+    description: >
+      Co-inventor. Covers automatically refining search queries using generated
+      keyword triggers, from work on Elastic Workplace Search.
+
+  - id: pub-mcp-all-hands
+    kind: talk
+    title: Model Context Protocol session, Elastic Engineering All Hands
+    dates: { start: 2025-02, end: 2026-06 }
+    tags: [mcp, ai-agents, public-speaking]
+    description: >
+      Hosted a session introducing MCP to Elastic's engineering organization.
+
+  - id: pub-agentic-tooling-blog
+    kind: blog
+    title: Agentic AI tooling for Elasticsearch
+    dates: { start: 2025-02, end: 2026-06 }
+    tags: [mcp, ai-agents, writing]
+    description: >
+      Blog post on agentic AI tooling for Elasticsearch.
+
+skills:
+  # evidence: ids of roles/accomplishments/projects that back the skill up.
+  - name: Python
+    category: Languages
+    evidence: [agentless-connectors, open-source-crawler-and-extraction]
+  - name: TypeScript
+    category: Languages
+    evidence: [agent-builder-connectors, context-engine-founding]
+  - name: Java
+    category: Languages
+    evidence: [workplace-search-jvm-client]
+  - name: Ruby
+    category: Languages
+    evidence: [open-source-crawler-and-extraction, workplace-search-contributions]
+  - name: Kotlin
+    category: Languages
+    evidence: []
+  - name: Elasticsearch
+    category: Search & Data
+    evidence: [context-engine-founding, connectors-ingest-pipelines, dr-gdpr-deletion]
+  - name: Kibana
+    category: Search & Data
+    evidence: [agent-builder-connectors]
+  - name: Spark
+    category: Search & Data
+    evidence: [dr-data-reconciliation, dr-spark-etl]
+  - name: Hadoop
+    category: Search & Data
+    evidence: [dr-data-reconciliation, dr-gdpr-deletion]
+  - name: Kafka
+    category: Search & Data
+    evidence: []
+  - name: AWS
+    category: Infrastructure
+    evidence: [dr-synthesys-cloud]
+  - name: Kubernetes
+    category: Infrastructure
+    evidence: []
+  - name: Docker
+    category: Infrastructure
+    evidence: []
+  - name: Buildkite CI/CD
+    category: Infrastructure
+    evidence: []
+  - name: Claude Code
+    category: AI/Agents
+    evidence: []
+  - name: Agentic pipelines
+    category: AI/Agents
+    evidence: [agent-builder-connectors, context-engine-founding]
+  - name: Context retrieval
+    category: AI/Agents
+    evidence: [context-engine-founding, retrieval-tool-accuracy]
+  - name: MCP
+    category: AI/Agents
+    evidence: [mcp-all-hands-and-blog]
+
+education:
+  - id: vanderbilt
+    institution: Vanderbilt University
+    dates: { start: 2010, end: 2014 }
+    degrees:
+      - { degree: M.S. Computer Science, gpa: "4.0" }
+      - { degree: B.S. Computer Science, minor: Mathematics, gpa: "3.71" }
