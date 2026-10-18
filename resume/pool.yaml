@@ -5,16 +5,19 @@
 # single application, and not polished for any particular audience.
 #
 # PUBLIC-SAFE ONLY. This file lives in a public repo. Do not add customer
-# names, unreleased features, internal-only metrics, or anything else that
-# isn't OK to share with a recruiter.
+# names, unreleased features, internal codenames, internal-only metrics, or
+# anything else that isn't OK to share with a recruiter.
 #
 # Conventions:
 #   - Dates are YYYY-MM. `end: null` means present.
 #   - `id`s are kebab-case and stable; other entries reference them.
+#   - `role` is the role where most of the work happened; `dates` may span
+#     beyond that role when the work did.
 #   - `description` is plain factual prose (a sentence to a paragraph), not
 #     finished resume wording. Agents write the bullets.
 #   - `tags` mix technologies (java, spark, ruby) and themes (leadership,
 #     open-source, ai-agents). Prefer reusing existing tags.
+#   - `links` are public URLs only.
 
 profile:
   name: Sean Story
@@ -42,7 +45,8 @@ roles:
     dates: { start: 2026-06, end: null }
     description: >
       Founding member of the Context Engine team, a sub-team of Elastic's
-      Agents and Context group.
+      Agents and Context group, building context infrastructure for agentic AI
+      and Elastic's presence in third-party agent ecosystems.
 
   - id: elastic-tech-lead-workplace-ai
     employer: Elastic
@@ -78,7 +82,7 @@ roles:
     dates: { start: 2019-08, end: 2020-11 }
     description: >
       Engineer on Elastic Workplace Search, part of the Enterprise Search
-      product line.
+      product line (a JRuby/Rails application).
 
   - id: dr-senior
     employer: Digital Reasoning
@@ -99,7 +103,9 @@ roles:
       offerings, and ETL infrastructure.
 
 accomplishments:
-  # --- Elastic: Context Engine -------------------------------------------
+  # ======================================================================
+  # Elastic: Context Engine (2026-06 →)
+  # ======================================================================
   - id: context-engine-founding
     role: elastic-principal-context-engine
     dates: { start: 2026-06, end: null }
@@ -107,53 +113,304 @@ accomplishments:
     description: >
       Founding member of the Context Engine team, building infrastructure to
       reduce token consumption in agentic workflows by providing structured,
-      permissioned context to LLMs via Elasticsearch.
+      permissioned context to LLMs via Elasticsearch. Earlier, as tech lead,
+      led the workstream that indexed metadata about Kibana resources for
+      agent retrieval (the foundation of what became the AI Index), set the
+      boundaries between it and the broader Context Engine, and briefed senior
+      leadership on its progress.
 
-  # --- Elastic: Workplace AI / Agent Builder -----------------------------
+  - id: context-engine-ai-index-foundations
+    role: elastic-principal-context-engine
+    dates: { start: 2026-06, end: 2026-09 }
+    tags: [context-retrieval, elasticsearch, kibana, typescript, security, permissions, architecture]
+    description: >
+      Built foundational storage and permission plumbing for Context Engine's
+      AI Index of Kibana resources: tagging and tag-filtered retrieval for
+      stored knowledge entries, and permission scoping for entries written by
+      workflow steps while preserving anti-spoofing guarantees. Added a
+      registry so plugins can register code-owned (managed) AI Indices at
+      startup, gated dependent agent tools and skills on Context Engine
+      availability, moved the plugin's data to a customer-queryable index with
+      matching Elasticsearch reserved-role changes, and pruned the plugin by a
+      net ~3,500 lines through repeated dead-code audits.
+    links:
+      - https://www.elastic.co/docs/explore-analyze/ai-features/context-engine/quickstart
+
+  - id: elastic-claude-plugin
+    role: elastic-principal-context-engine
+    dates: { start: 2026-08, end: 2026-10 }
+    tags: [ai-agents, mcp, claude-code, agent-skills, open-source, integrations, initiative-lead, cross-team, ci-cd, writing]
+    description: >
+      Led Elastic's official plugin for Claude from a short RFC to public
+      release. The open-source plugin bundles Elastic's Agent Skills and the
+      Elastic Docs MCP server and is published in Claude's plugin directory.
+      Restructured the repo with TypeScript lint/test infrastructure and a
+      skills-consistency test suite, designed a release flow compatible with
+      branch protection (dispatch a release PR, auto-tag on merge), added
+      Renovate automation, hardened workflows against shell injection, and
+      prepared the repo for public visibility (license headers enforced by a
+      custom ESLint rule, NOTICE, code of conduct, service catalog
+      registration). Also took the Agent Builder MCP server through review for
+      Claude's connector directory, patched other teams' tools and skills to
+      meet partner guidelines, and wrote the public docs for both the plugin
+      and the connector.
+    links:
+      - https://github.com/elastic/claude-plugin
+      - https://github.com/elastic/docs-content/pull/8612
+      - https://github.com/elastic/docs-content/pull/8835
+
+  - id: mcp-server-directory-readiness
+    role: elastic-principal-context-engine
+    dates: { start: 2026-08, end: 2026-09 }
+    tags: [mcp, ai-agents, agent-tools, kibana, typescript, cross-team, architecture, quality]
+    description: >
+      Led a phased, cross-team rollout of MCP tool annotations (read-only,
+      destructive, idempotent, open-world hints) across Agent Builder's MCP
+      server: first the framework, then per-team PRs so each owning team
+      (platform, Cases, Observability, ML, Security, Streams, Workflows)
+      reviewed its own tools, then making annotations required at the type
+      level so missing ones fail compilation. Brought the MCP tool surface in
+      line with public MCP-directory review criteria: split a mixed read/write
+      Cases tool into separate tools with a backward-compatible deprecation,
+      hid internal and session-specific tools from external clients, and gated
+      tools and skills by serverless project type and space solution so
+      external clients only see tools that work.
+    links:
+      - https://github.com/elastic/kibana/pull/284764
+      - https://github.com/elastic/kibana/pull/287633
+
+  - id: mcp-server-oauth-hardening
+    role: elastic-principal-context-engine
+    dates: { start: 2026-08, end: 2026-10 }
+    tags: [mcp, oauth, security, kibana, cross-team, ai-agents]
+    description: >
+      Reviewed and hardened the Agent Builder MCP server's OAuth support for
+      use by external AI platforms. Identified gaps, prototyped a fix that
+      broadened the protected-resource scope to cover agent-to-agent (A2A)
+      endpoints as well as MCP, and aligned the approach with the identity and
+      Kibana security teams.
+
+  - id: agent-builder-tool-review-skill
+    role: elastic-principal-context-engine
+    dates: { start: 2026-09, end: 2026-09 }
+    tags: [ai-agents, claude-code, code-review, developer-tooling, quality, mcp]
+    description: >
+      Wrote a review checklist for Agent Builder tool registrations
+      (availability gating, MCP exposure, destructive-operation confirmation,
+      description and schema quality, token-efficient return values,
+      annotation accuracy) and wired it into three surfaces: a Claude
+      Code/Cursor skill, an automated PR-review specialist, and a GitHub
+      Copilot review agent.
+    links: [https://github.com/elastic/kibana/pull/292150]
+
+  - id: claude-slide-deck-skill
+    role: elastic-principal-context-engine
+    dates: { start: 2026-06, end: 2026-06 }
+    tags: [claude-code, agent-skills, developer-tooling, public-speaking]
+    description: >
+      Built a Claude Code skill that generates on-brand Elastic slide decks,
+      used it for his Engineering All Hands 2026 material, and shared it with
+      colleagues who adopted it.
+
+  # ======================================================================
+  # Elastic: Workplace AI / Agent Builder (2025-02 → 2026-06)
+  # ======================================================================
+  - id: workplace-ai-integration-strategy
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-02, end: 2025-03 }
+    tags: [mcp, architecture, strategy, connectors, ai-agents, leadership, communication]
+    description: >
+      At the start of Elastic's workplace AI chat effort (which evolved into
+      Agent Builder), led a re-evaluation of whether connectors were the right
+      integration mechanism and proposed MCP as the abstraction layer between
+      the assistant and third-party data, with connectors as one
+      implementation. Wrote the integrations pre-read for a GenAI leadership
+      offsite and posted regular status summaries that kept product,
+      engineering, and partner teams aligned.
+
   - id: agent-builder-connectors
     role: elastic-tech-lead-workplace-ai
-    dates: { start: 2025-02, end: 2026-06 }
-    tags: [ai-agents, connectors, agent-tools, kibana, typescript, integrations, architecture]
+    dates: { start: 2025-10, end: 2026-06 }
+    tags: [ai-agents, connectors, agent-tools, agent-skills, kibana, typescript, integrations, architecture]
     description: >
       Integrated 40+ data connectors into Elastic's Agent Builder product as
-      first-class agent tools. The work included connector lifecycle
-      management, attachment handling, and a sub-action execution layer.
+      first-class agent tools. Prototyped standalone "data sources" first, then
+      consolidated them into Kibana's connector framework and deleted the
+      separate plugin (~12,000 lines removed). Defined connector lifecycle
+      hooks, a connector attachment type so users can @-mention and chat with
+      a connector, and dynamic skill registration so a connector contributes
+      agent skills only once connected. Replaced per-connector generated
+      workflow tools with one generic sub-action execution tool plus markdown
+      "connector skills", pushed tool-registry filtering down to Elasticsearch
+      to keep lookup fast as the catalog grew, and added per-agent connector
+      scoping. As tech lead, also oversaw the team that delivered external MCP
+      server connectivity for Agent Builder in 9.3, and built a strong working
+      relationship with the platform connectors team.
+    links:
+      - https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/connectors
 
   - id: retrieval-tool-accuracy
     role: elastic-tech-lead-workplace-ai
-    dates: { start: 2025-02, end: 2026-06 }
-    tags: [ai-agents, retrieval, evaluation, relevance, llm, metrics]
+    dates: { start: 2025-08, end: 2025-10 }
+    tags: [ai-agents, retrieval, evaluation, relevance, llm, metrics, hybrid-search, semantic-search]
     description: >
-      Improved the accuracy of a retrieval tool used in production AI workflows
-      from 77% to over 90% through systematic evaluation and iteration.
+      Improved the accuracy of Agent Builder's index-selection tool (which
+      picks the Elasticsearch index that answers a user's question) from a 77%
+      baseline to over 90%. Using a golden evaluation dataset with
+      hard-negative indices and an automated harness, compared approaches:
+      full mappings overflowed the LLM context, flattened field names helped
+      modestly, and index _meta descriptions reached ~93%. Also prototyped
+      semantic retrieval over per-index metadata documents and a hybrid-search
+      (RRF + semantic_text) candidate pre-filter that keeps the prompt from
+      growing with the number of indices. Shipped mapping-description support
+      in the tool and published the results on Search Labs.
+    links:
+      - https://github.com/elastic/kibana/pull/232437
+      - https://www.elastic.co/search-labs/blog/ai-agent-builder-experiments-performance
+    related: [pub-agentic-tooling-blog]
 
   - id: connector-oauth-and-cli
     role: elastic-tech-lead-workplace-ai
-    dates: { start: 2025-02, end: 2026-06 }
-    tags: [connectors, oauth, security, developer-tooling, cli, architecture, enterprise]
+    dates: { start: 2025-12, end: 2026-04 }
+    tags: [connectors, oauth, security, developer-tooling, cli, architecture, enterprise, kibana, typescript]
     description: >
-      Architected and expanded the connector ecosystem with OAuth Authorization
-      Code flows (Microsoft Teams, ServiceNow, Notion) and a connector creation
-      CLI, accelerating enterprise onboarding.
+      Implemented the OAuth 2.0 Authorization Code grant for Kibana's v2
+      connector framework (new auth type, state handling with scheduled cleanup
+      of stale state, refresh tokens, rate-limited auth endpoints), first for
+      Notion and SharePoint Online, then Microsoft Teams, with docs for
+      ServiceNow, Notion, and Salesforce. Built a connector creation CLI that
+      bulk-creates test connectors from YAML manifests pointing at Vault
+      secrets (idempotent, with dry-run), so teammates can test a new
+      connector right after adding its manifest.
+
+  - id: quick-connect-oauth-service
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-11, end: 2026-06 }
+    tags: [oauth, security, connectors, go, kibana, cross-team, enterprise, gitops]
+    description: >
+      Expanded and drove the rollout of Elastic's hosted OAuth redirect
+      service, which powers Quick Connect OAuth so customers can authorize
+      Kibana connectors without registering their own OAuth apps. Added
+      Microsoft and Slack providers to the Go service, documented the
+      Elastic-owned Google, Microsoft, and Slack OAuth apps for security
+      review, steered the privacy and security approvals for company-wide
+      internal use, handled the serverless GitOps and provisioning changes for
+      rollout, built an in-Kibana connection tester, and designed per-provider
+      feature gating so verified providers ship while others stay internal.
+    links:
+      - https://www.elastic.co/docs/reference/kibana/connectors-kibana/quick-connect-oauth
+
+  - id: workflow-tool-token-efficiency
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-10, end: 2025-10 }
+    tags: [ai-agents, workflows, llm, token-efficiency, kibana, typescript]
+    description: >
+      Cut token usage for Agent Builder workflow tools by returning only the
+      final step's output rather than the full workflow execution JSON, which
+      had been bloating context and causing message-size errors. Also fixed
+      foreach output handling and added header support to generic
+      Elasticsearch workflow steps (e.g. to call inference rerank endpoints).
+
+  - id: ai-assisted-connector-development
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-12, end: 2026-03 }
+    tags: [claude-code, ai-agents, agent-skills, developer-tooling, connectors, code-review, security]
+    description: >
+      Built Claude Code skills for generating and reviewing new Kibana
+      connectors; one full connector was produced in a single pass. Refined
+      the review skill from a week of real use (checks for sensitive-data
+      logging, SSRF risk, efficient API use, tool consolidation) and wrote
+      READMEs aimed at coding assistants. Used assistants to backfill missing
+      tests, docs, and i18n across the v2 connector specs (~2,700 lines), and
+      shipped a Brave Search web-search connector.
+
+  - id: ai-dev-adoption-hackathon
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2026-02, end: 2026-02 }
+    tags: [ai-agents, agent-skills, leadership, developer-experience, evangelism]
+    description: >
+      Organized and hosted an open micro-hackathon for the Search engineering
+      group in which engineers used Agent Skills and AI coding assistants to
+      build new Agent Builder data sources, to get late adopters hands-on with
+      AI-assisted development and gather developer-experience feedback.
+
+  - id: agentic-connector-bug-bash
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2026-04, end: 2026-04 }
+    tags: [claude-code, ai-agents, developer-tooling, testing, kibana, connectors, hackathon]
+    description: >
+      During an innovation week, built a script that bootstraps every
+      connector type into a local Kibana environment (adopted by the platform
+      connectors team), then used Claude Code with parallel sub-agents to test
+      those connectors against a bug-bash plan, triaged the results, and filed
+      the real bugs. The same week, prototyped shipping Agent Builder with the
+      Elastic Docs MCP server pre-configured.
+
+  - id: workplace-ai-planning-templates
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-04, end: 2025-09 }
+    tags: [process-improvement, project-planning, leadership]
+    description: >
+      Introduced GitHub issue templates (Milestone, Epic, Task) with
+      granularity checklists tying every issue to a department key outcome,
+      moving project tracking out of Slack and docs, plus a standard
+      new-connector template with sizing guidance and integration checklists.
+
+  - id: thumbnails4j-release-modernization
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2025-03, end: 2025-10 }
+    tags: [java, maven, buildkite, ci-cd, release-engineering, open-source]
+    description: >
+      Revived thumbnails4j's release process: moved Maven Central publishing to
+      Buildkite (working through GPG signing, Maven Central auth, and
+      branch-protection constraints with the productivity and security teams),
+      migrated to the new Maven Central publishing flow, upgraded to PDFBox 3,
+      and shipped new releases. Also added the team's Buildkite pipelines
+      (crawler, connectors, extraction service, thumbnails4j) to failure
+      alerting.
+    related: [proj-thumbnails4j]
 
   - id: mcp-all-hands-and-blog
     role: elastic-tech-lead-workplace-ai
-    dates: { start: 2025-02, end: 2026-06 }
+    dates: { start: 2025-10, end: 2026-06 }
     tags: [mcp, ai-agents, public-speaking, writing, evangelism]
     description: >
       Hosted a Model Context Protocol (MCP) session at Elastic's Engineering All
-      Hands, and published a blog post on agentic AI tooling for Elasticsearch.
+      Hands, and published a Search Labs post on evaluation-driven improvements
+      to agentic AI tools for Elasticsearch.
     related: [pub-mcp-all-hands, pub-agentic-tooling-blog]
 
-  # --- Elastic: Search Ingestion -----------------------------------------
+  - id: hiring-and-interviewing
+    role: elastic-tech-lead-workplace-ai
+    dates: { start: 2020-06, end: 2026-03 }
+    tags: [hiring, interviewing, mentoring, leadership]
+    description: >
+      Long-running contributor to engineering hiring: technical interviews for
+      principal-level candidates from 2020, onboarding new teammates as
+      interviewers in 2022, and in 2025–2026 technical panels for engineering,
+      team-lead, and technical-writer roles, helping design the interview
+      process for a frontend hire, sourcing referrals, and writing promotion
+      endorsements for teammates.
+
+  # ======================================================================
+  # Elastic: Search Ingestion (2022-05 → 2025-02)
+  # ======================================================================
   - id: agentless-connectors
     role: elastic-principal-search-ingestion
-    dates: { start: 2022-05, end: 2025-02 }
-    tags: [connectors, python, elastic-agent, leadership, cross-team, initiative-lead]
+    dates: { start: 2024-03, end: 2025-02 }
+    tags: [connectors, python, elastic-agent, grpc, leadership, cross-team, initiative-lead]
     description: >
-      Led the Agentless Connectors initiative, running Python connectors inside
-      Elastic Agent. Took it from proof of concept, through cross-functional
-      alignment, to delivery.
+      Started and led the Agentless Connectors initiative: running Python
+      connectors inside Elastic Agent so Elastic can host them. Ran discovery
+      with the Fleet/Integrations and Agentless tech leads, wrote up findings,
+      won leadership support, and opened the epic. Bootstrapped
+      python-elastic-agent-client, an open-source Python client for Elastic
+      Agent's gRPC control protocol, and onboarded Connectors onto Elastic's
+      daily release artifact (DRA) pipeline so the Agent team could take the
+      connectors package as a dependency of the agentless image. Took it from
+      POC through cross-functional alignment to delivery.
+    links: [https://github.com/elastic/python-elastic-agent-client]
+    related: [proj-python-elastic-agent-client, connectors-unified-release-migration]
 
   - id: customer-pilot-rescue
     role: elastic-principal-search-ingestion
@@ -166,30 +423,346 @@ accomplishments:
 
   - id: open-source-crawler-and-extraction
     role: elastic-principal-search-ingestion
-    dates: { start: 2022-05, end: 2025-02 }
-    tags: [open-source, ruby, python, tika, web-crawler, document-extraction]
+    dates: { start: 2023-05, end: 2024-04 }
+    tags: [open-source, ruby, tika, nginx, lua, docker, web-crawler, document-extraction]
     description: >
       Open-sourced the Elastic Web Crawler, a Ruby-based crawler with 5+ years
-      of internal development, and the Data Extraction Service, a Python/Tika
+      of internal development, and the Data Extraction Service, a Tika-based
       service for parsing binary documents, making both available to the
-      Elastic community.
-    related: [proj-elastic-crawler, proj-data-extraction-service]
+      Elastic community. For the extraction service, bootstrapped the repo and
+      its Docker build/release pipeline, completed the open-source checklist
+      (NOTICE, licensing, dependency review, CLA), reworked the docs, and wrote
+      the launch blog published the day the repo went public.
+    related: [proj-elastic-crawler, proj-data-extraction-service, pub-binary-document-ingestion-blog]
+
+  - id: crawler-elasticsearch-indices-port
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-06, end: 2022-09 }
+    tags: [web-crawler, ruby, rails, elasticsearch, architecture, migration]
+    description: >
+      Led the engineering work that moved Elastic's web crawler from App
+      Search engines onto plain Elasticsearch indices, the basis of the Elastic
+      web crawler in 8.x. Ported the crawler to an engine-independent model and
+      API, implemented an Elasticsearch output sink, added configurable crawl
+      event logging, brought over and fixed the crawler test suite, handled
+      read-only and blocked indices, and wrote the migration that registered
+      existing crawler configurations as connector records.
+    related: [proj-elastic-crawler]
 
   - id: connectors-ingest-pipelines
     role: elastic-principal-search-ingestion
-    dates: { start: 2022-05, end: 2025-02 }
-    tags: [connectors, ingest-pipelines, machine-learning, elasticsearch, filtering]
+    dates: { start: 2022-04, end: 2023-04 }
+    tags: [connectors, ingest-pipelines, machine-learning, elasticsearch, filtering, kibana, ruby, python, cross-team]
     description: >
       Shipped custom ingest pipeline support for Connectors, enabling ML
-      inference at ingest time, along with connector filtering rules.
+      inference at ingest time, plus connector filtering (sync) rules. Created
+      the default ingest pipeline for connector and crawler documents, then
+      the managed generic pipeline for new search indices and per-index
+      pipeline creation in Kibana, with ML inference on by default. Made the ML
+      inference pipeline API accept full definitions. Implemented pipeline
+      support in both the Ruby and Python connector clients. For filtering,
+      wrote the 8.6 implementation doc, updated the connector protocol, made
+      sync jobs snapshot their rules, built the first rules engine in the Ruby
+      framework, and designed the connector "features" flags that tell Kibana
+      which optional capabilities each connector supports, coordinating across
+      the Ruby, Python, and Kibana teams.
 
   - id: elser-early-integration
     role: elastic-principal-search-ingestion
-    dates: { start: 2022-05, end: 2025-02 }
-    tags: [elser, machine-learning, semantic-search, embeddings, cross-team, quality]
+    dates: { start: 2023-01, end: 2023-05 }
+    tags: [elser, machine-learning, semantic-search, embeddings, cross-team, quality, kibana]
     description: >
       Drove early cross-team integration with ELSER, Elastic's in-house sparse
-      embedding model, surfacing critical bugs before GA.
+      embedding model, surfacing critical bugs before GA. Implemented automatic
+      index-mapping updates in Kibana when users attach an ELSER inference
+      pipeline, pushed for end-to-end connectors-to-ELSER stress testing, and
+      contributed public guidance on chunking large text fields. The work
+      shipped as "semantic search in a few clicks" for connectors and the
+      crawler in Enterprise Search 8.8.
+    links: [https://www.elastic.co/blog/whats-new-elastic-enterprise-search-8-8-0]
+
+  - id: connectors-document-level-security
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-03, end: 2024-02 }
+    tags: [connectors, document-level-security, security, elasticsearch, kibana, rfc, architecture, python, react]
+    description: >
+      Led discovery and wrote the RFC for document-level security (DLS) in
+      Elastic connectors, which lets search applications enforce source-system
+      permissions. Defined the strict index template for identity/ACL
+      documents and the permissions sync job index, made generated API keys
+      cover the access-control index, granted the right Elasticsearch
+      privileges, and later simplified the generated query template so it can
+      be dropped straight into a role descriptor. Extended Elastic's public
+      internal-knowledge-search example app with a "search as persona" mode
+      demonstrating DLS end to end, and wrote the Search Labs guide.
+    links:
+      - https://www.elastic.co/docs/reference/search-connectors/es-dls-overview
+      - https://www.elastic.co/search-labs/blog/dls-internal-knowledge-search
+    related: [pub-dls-internal-knowledge-search-blog, sharepoint-online-dls-correctness]
+
+  - id: sharepoint-online-dls-correctness
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-07, end: 2023-12 }
+    tags: [connectors, python, document-level-security, security, sharepoint, microsoft-graph, access-control]
+    description: >
+      Reworked how the SharePoint Online connector computes DLS access-control
+      lists: based site permissions on role assignments so Limited Access
+      users no longer gained read access, made group-vs-user detection
+      consistent, propagated ACLs to subsites and their pages (previously
+      invisible through DLS), included all Site Collection Administrators, and
+      stopped permissions API calls when DLS is off.
+    links:
+      - https://github.com/elastic/connectors/pull/1688
+      - https://github.com/elastic/connectors/pull/1758
+
+  - id: sharepoint-online-sync-performance
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-07, end: 2023-10 }
+    tags: [connectors, python, performance, sharepoint, microsoft-graph, incremental-sync, scale]
+    description: >
+      Led a series of SharePoint Online connector performance improvements:
+      bulk Microsoft Graph requests for access-control sync, a configurable
+      enumeration strategy for different tenant shapes, direct lookup of
+      configured sites instead of paging the whole tenant, explicit field
+      selection (cutting indexed fields from ~224 to ~70 in a test sync), and
+      incremental syncs that skip unchanged sites, drives, lists, items, and
+      pages. In test runs, a no-change incremental sync with DLS enabled went
+      from 18 minutes to 4 seconds.
+    links:
+      - https://github.com/elastic/connectors/pull/1731
+      - https://github.com/elastic/connectors/pull/1255
+
+  - id: slack-connector
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-07, end: 2023-08 }
+    tags: [connectors, python, slack, integrations, new-connector]
+    description: >
+      Built Elastic's Slack connector (released as a tech-preview connector
+      client), syncing users, public channels, and their messages, with an
+      option for the bot to auto-join channels, plus functional test coverage.
+    links: [https://github.com/elastic/connectors/pull/1298]
+
+  - id: connectors-native-mode-deprecation-and-config
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-06, end: 2023-08 }
+    tags: [connectors, python, developer-experience, configuration, deprecation, product-design]
+    description: >
+      Drove the move of self-managed Python connectors from "native" mode to
+      connector-client mode: made client mode the default, added configurable
+      deprecation warnings and a fail-fast preflight check, and updated the
+      docs. Then simplified configuration so all defaults live in code and a
+      user's config.yml needs only Elasticsearch credentials and a connector
+      list, with a sample file that stays valid YAML when fully uncommented.
+    links:
+      - https://github.com/elastic/connectors/pull/1404
+      - https://github.com/elastic/connectors/pull/1063
+
+  - id: premium-connectors-licensing
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-06, end: 2023-06 }
+    tags: [connectors, python, licensing, product]
+    description: >
+      Introduced "premium" connectors in the connectors framework, blocking
+      syncs when the cluster's license is too low for that connector.
+
+  - id: connectors-developer-docs-ga
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-03, end: 2023-05 }
+    tags: [documentation, developer-experience, open-source, community, connectors]
+    description: >
+      Wrote the developer documentation for the Python connectors framework's
+      GA: connector reference, contribution guidelines, and a developer guide
+      (architecture, testing, common patterns), plus design considerations for
+      new connectors, a contributor checklist, and an upgrade guide. Earlier set
+      up PR/issue templates and PR-hygiene checklists across the connectors
+      repos.
+    links:
+      - https://github.com/elastic/connectors/pull/935
+
+  - id: connectors-sync-framework-reliability
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-11, end: 2024-10 }
+    tags: [connectors, python, asyncio, reliability, error-handling, bug-fix]
+    description: >
+      Fixed a series of reliability bugs in the core sync framework: sink and
+      extractor errors now reach the orchestrator and end the job promptly
+      instead of timing out; failed job claims fail with an actionable message
+      instead of sitting "pending" forever; asyncio tasks are always cancelled
+      on shutdown; and full syncs genuinely re-sync, removing a timestamp
+      optimization that forced users to wipe data after any code, pipeline, or
+      config change.
+    links:
+      - https://github.com/elastic/connectors/pull/2364
+      - https://github.com/elastic/connectors/pull/2606
+
+  - id: connectors-sync-observability
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-03, end: 2024-07 }
+    tags: [connectors, python, observability, logging, metrics, supportability, rfc, kibana]
+    description: >
+      Wrote and ran the RFC for connector sync "counters", then implemented
+      detailed per-job ingestion counters in the framework (bulk operations,
+      item responses, duplicate IDs, extracted docs, queued
+      creates/updates/deletes) logged at the end of every sync and surfaced in
+      Kibana with explanatory tooltips. This made systemic problems such as
+      duplicate IDs, heavy filtering, or an unhealthy cluster visible to support
+      and users.
+    links: [https://github.com/elastic/connectors/pull/2347]
+
+  - id: connectors-telemetry
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-03, end: 2026-09 }
+    tags: [telemetry, connectors, product-analytics, elasticsearch, kibana, metrics]
+    description: >
+      Designed and built connectors product telemetry: connector counts by type
+      and state, per-service sync job history over 7- and 30-day windows
+      (statuses, top errors, durations), and feature usage (scheduling,
+      filtering, ingest pipelines, native connectors), with a payload shaped to
+      map cleanly in Elasticsearch. Years later, found and fixed a gap where
+      connectors telemetry was only collected from Search serverless projects
+      by moving the collector into a platform plugin.
+
+  - id: connectors-unified-release-migration
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-08, end: 2025-03 }
+    tags: [release-engineering, buildkite, ci-cd, docker, python, packaging, licensing, cross-team]
+    description: >
+      Moved the Connectors release process onto Elastic's unified release
+      system, replacing a bespoke pipeline: added a Python source distribution
+      build, published Docker images through it, generated the dependency
+      report and NOTICE file, and aligned versions with the Elastic Stack's
+      semver. Rebuilt a gated manual-release Buildkite pipeline that computes,
+      commits, and tags versions automatically so the Docker tag, git tag, and
+      CLI version always agree, then added version-qualifier support to produce
+      the 9.0.0 alpha and rc pre-releases.
+    links:
+      - https://github.com/elastic/connectors/pull/2749
+      - https://github.com/elastic/connectors/pull/2804
+
+  - id: connectors-9-0-index-modernization
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-10, end: 2024-12 }
+    tags: [connectors, elasticsearch, mappings, breaking-change, api-design, product-design]
+    description: >
+      Used the 9.0 major release to remove a legacy behavior: connectors no
+      longer force App Search-optimized mappings and settings onto their
+      output indices, emitting plain JSON into indices with default mappings
+      (~700 lines removed). Also pushed to deprecate direct access to the
+      connectors system indices in favor of the Elasticsearch Connector APIs.
+    links: [https://github.com/elastic/connectors/pull/3013]
+
+  - id: enterprise-search-9-0-migration
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-12, end: 2025-01 }
+    tags: [migration, deprecation, kibana, elasticsearch, upgrade, cross-team]
+    description: >
+      Prepared users for the removal of Enterprise Search in 9.0: added
+      critical deprecations to Kibana's Upgrade Assistant (Enterprise Search
+      nodes, crawler connector records, invalid native connector types,
+      Agentless and Fleet Server availability) with one-click fixes where
+      possible, and coordinated a three-repo switch of the default ingest
+      pipeline across Elasticsearch, Kibana, and connectors.
+    links: [https://github.com/elastic/kibana/pull/205500]
+
+  - id: native-connector-configs
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-11, end: 2024-12 }
+    tags: [connectors, kibana, documentation, ux]
+    description: >
+      Added native (Elastic-managed) connector definitions in Kibana (e.g.
+      Oracle, MongoDB SSL), clarified connector sync counters in the UI, and
+      wrote public connector docs (authentication options, sync-rule
+      limitations, known issues).
+
+  - id: connectors-field-triage
+    role: elastic-principal-search-ingestion
+    dates: { start: 2023-07, end: 2025-09 }
+    tags: [supportability, triage, connectors, quality, customer-facing]
+    description: >
+      Filed and scoped ~80 issues on the connectors repo from field and support
+      investigations across many connectors (SharePoint, Salesforce,
+      Confluence, GitHub, ServiceNow, Outlook, Network Drive, SQL) and the
+      framework (scheduling across restarts, stuck jobs, missing error
+      surfacing), many of which became fixes he or the team shipped.
+
+  - id: connectors-ci-stewardship
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-10, end: 2026-01 }
+    tags: [buildkite, ci-cd, github-actions, developer-tooling, testing]
+    description: >
+      Maintained CI for the connectors, crawler, and extraction-service repos:
+      Buildkite linting, failure notifications, functional-test timeouts,
+      fallback to the previous Elasticsearch minor during version bumps, new
+      connectors in nightly CI, an issue-sync GitHub Action, and fixes for
+      external contributors' fork PRs.
+
+  - id: dataflow-elasticsearch-timeout
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-07, end: 2024-07 }
+    tags: [open-source, java, google-cloud, dataflow, customer-facing, ingestion]
+    description: >
+      Contributed upstream to Google Cloud's Dataflow Templates to expose an
+      Elasticsearch socket-timeout option, unblocking a customer whose
+      BigQuery-to-Elasticsearch ingestion with ML inference pipelines was
+      timing out.
+    links: [https://github.com/GoogleCloudPlatform/DataflowTemplates/pull/1710]
+
+  - id: release-management
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-06, end: 2025-10 }
+    tags: [release-engineering, maintenance, security, dependency-management, leadership, jruby]
+    description: >
+      Served as release manager for Enterprise Search patch releases (feature
+      freeze, build candidates, QA, announcements), later coordinated the
+      team's release-manager rotation, and fixed backport tooling gaps. Helped
+      maintain Enterprise Search through its 7.17 and 8.x maintenance lines,
+      keeping JRuby and JavaScript dependencies patched against published CVEs
+      and resolving a long-running scanner finding in the packaged artifact by
+      pulling in an unreleased upstream fix.
+
+  - id: incident-rca-and-postmortems
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-07, end: 2025-06 }
+    tags: [incident-response, reliability, process-improvement, leadership, on-call]
+    description: >
+      Led and co-authored root-cause analyses and blameless post-mortems for
+      production issues in the connectors and ingestion stack, bringing in
+      cross-team stakeholders and turning findings into action items
+      (monitoring, dependency management, and a fix to a gap in the CVE
+      tracking process).
+
+  - id: on-call-runbooks
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-07, end: 2024-10 }
+    tags: [on-call, runbooks, operations, documentation, process-improvement]
+    description: >
+      After his first on-call shifts, wrote the team's on-call
+      responsibilities, a runbook overview, and a troubleshooting guide for
+      failing smoke tests, capturing knowledge from incident threads, and set
+      up code ownership for runbooks.
+
+  - id: stakeholder-status-reporting
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-10, end: 2025-03 }
+    tags: [communication, leadership, project-planning]
+    description: >
+      Wrote detailed monthly delivery-and-risk updates for the managed
+      connectors program, which leadership held up as a model for the
+      department.
+
+  - id: community-support
+    role: elastic-principal-search-ingestion
+    dates: { start: 2020-01, end: 2025-12 }
+    tags: [community, customer-facing, support, connectors, web-crawler, elser]
+    description: >
+      Long-running public community support on the Elastic Discuss forums:
+      400+ posts with 50+ accepted solutions on connectors, sync rules, the web
+      crawler, App/Workplace Search, ELSER, document-level security, and
+      content extraction. One thread, where he pulled in the right experts to
+      solve a user's crawler indexing problem, was praised by a colleague
+      as an example of Elastic's customer-first value. Also regularly worked
+      through backlogs of unanswered community posts.
+    links: [https://discuss.elastic.co/u/sean_story/summary]
 
   - id: solo-delivery-after-layoff
     role: elastic-principal-search-ingestion
@@ -199,54 +772,252 @@ accomplishments:
       Inherited a mid-cycle project after a teammate's layoff and delivered it
       solo, on schedule.
 
-  # --- Elastic: Connectors Working Group ---------------------------------
+  # ======================================================================
+  # Elastic: Connectors Working Group (2020-11 → 2022-05)
+  # ======================================================================
   - id: connectors-2-architecture
     role: elastic-senior-connectors
-    dates: { start: 2020-11, end: 2022-05 }
-    tags: [connectors, architecture, api-design, project-planning, leadership, cross-team]
+    dates: { start: 2021-06, end: 2022-04 }
+    tags: [connectors, architecture, api-design, project-planning, leadership, cross-team, python, ruby]
     description: >
       Architected Connectors 2.0. Defined the phased project plan, drove the
       proof of concept that became the foundation for the team's API design,
       and coordinated delivery across 8+ engineers and multiple stakeholders.
+      His prototype code became the seed of the first standalone Python
+      connector service (Google Drive running as an external process). Led the
+      refactors that separated connector code from Enterprise Search
+      internals so Enterprise Search could consume connectors from the new
+      repository and surface external connectors in the UI, diagnostics, and
+      telemetry. His Salesforce connector demo was singled out by peers as
+      setting a high bar.
 
   - id: connectors-sdk-open-source
     role: elastic-senior-connectors
-    dates: { start: 2020-11, end: 2022-05 }
-    tags: [open-source, connectors, sdk, ruby, developer-experience, community]
+    dates: { start: 2022-01, end: 2022-06 }
+    tags: [open-source, connectors, sdk, ruby, developer-experience, community, ci-cd]
     description: >
-      Migrated the Connectors SDK out of the enterprise-search monorepo into a
-      standalone open-source repository, growing active contributors from one
-      to the full team.
+      Migrated the Connectors SDK from the enterprise-search monorepo to a
+      standalone open-source repository (connectors-ruby), growing active
+      contributors from one to the full team. Moved the base connector
+      classes and the Office 365/SharePoint connectors, added RSpec and CI,
+      restructured the gem so it could be used outside Enterprise Search, set
+      up release jobs, and added community-health files before the repo went
+      public. Second-largest all-time contributor to the repo.
     related: [proj-connectors-sdk]
 
-  # --- Elastic: Workplace Search -----------------------------------------
+  - id: ws-content-source-management-api
+    role: elastic-senior-connectors
+    dates: { start: 2021-02, end: 2021-08 }
+    tags: [api-design, rest-api, connectors, rails, ruby, json-schema]
+    description: >
+      Designed and built most of Workplace Search's public Content Sources
+      management API: list, get, create, update, and delete content sources,
+      bulk-delete a source's documents, fetch a document with its permission
+      fields, and start or interrupt sync jobs, with JSON schemas for the
+      serialized source and consistent JSON errors. Made content sources
+      manageable programmatically rather than only through the UI.
+
+  - id: thumbnails4j-open-source
+    role: elastic-senior-connectors
+    dates: { start: 2021-01, end: 2021-12 }
+    tags: [open-source, java, jvm, maven, document-extraction, initiative-lead, hackathon]
+    description: >
+      Proposed and built thumbnails4j, an open-source Java library for
+      generating document thumbnails (DOC/DOCX, PPTX, XLS/XLSX, PDF, HTML,
+      images), as an innovation-week project. Extracted Workplace Search's
+      thumbnail code into a reusable Maven library, made the case to
+      leadership for open-sourcing it, took it through Elastic's open-source
+      approval, set up CI and the Maven Central release process, and replaced
+      ~1,000 lines of in-product JRuby code with a dependency on it. Primary
+      author (~79 of ~110 commits).
+    links:
+      - https://github.com/elastic/thumbnails4j
+    related: [proj-thumbnails4j, office-document-thumbnails, pub-advent-thumbnails4j]
+
+  - id: connector-rate-limit-suspension
+    role: elastic-senior-connectors
+    dates: { start: 2020-12, end: 2020-12 }
+    tags: [connectors, reliability, rate-limiting, ruby]
+    description: >
+      Made long-running connector syncs survive third-party API rate limits:
+      jobs now suspend and resume when a source throttles, and purge
+      (deletion-reconciliation) jobs became resumable instead of re-scanning
+      every indexed ID.
+
+  - id: connector-actionable-errors
+    role: elastic-senior-connectors
+    dates: { start: 2020-11, end: 2021-05 }
+    tags: [connectors, observability, supportability, error-handling, ux]
+    description: >
+      Made connector failures actionable for admins and support: unique error
+      IDs across logs, job records, and the UI; human-readable reasons for
+      common exceptions (also in diagnostic bundles); recent sync errors and
+      running-job durations shown in the source UI so hung syncs are obvious;
+      and safeguards so jobs failing mid-transition end in an error state
+      rather than hanging.
+
+  - id: connector-outbound-request-hardening
+    role: elastic-senior-connectors
+    dates: { start: 2021-08, end: 2023-01 }
+    tags: [security, connectors, http, ruby]
+    description: >
+      Hardened connector HTTP clients against server-side request forgery by
+      restricting outbound requests and redirects to explicitly allowed hosts,
+      applied across the Atlassian, ServiceNow, Zendesk, and external-connector
+      clients, with localhost targets blocked unless an operator opts in.
+
+  - id: ws-developer-experience
+    role: elastic-senior-connectors
+    dates: { start: 2020-11, end: 2021-05 }
+    tags: [developer-experience, developer-tooling, java, logging, jruby]
+    description: >
+      First to bring up the Enterprise Search dev environment on Apple Silicon
+      Macs, documenting the gaps and fixing setup scripts so others could
+      follow. Also prototyped moving the JRuby application's logging onto
+      SLF4J/Logback for finer-grained control and shared the findings.
+
+  - id: engineering-recognition-award-2021
+    role: elastic-senior-connectors
+    dates: { start: 2021-10, end: 2021-10 }
+    tags: [recognition, award]
+    description: >
+      Received Elastic's Engineering Recognition Award, a peer-nominated award
+      for above-and-beyond contributions, in October 2021.
+
+  # ======================================================================
+  # Elastic: Workplace Search (2019-08 → 2020-11)
+  # ======================================================================
   - id: workplace-search-contributions
     role: elastic-sde2-workplace-search
-    dates: { start: 2019-08, end: 2020-11 }
-    tags: [search, full-text-search, enterprise, ruby, rails, elasticsearch]
+    dates: { start: 2019-08, end: 2021-05 }
+    tags: [search, full-text-search, enterprise, ruby, rails, jruby, elasticsearch]
     description: >
       Contributed to Elastic Workplace Search, which delivers real-time
       full-text search across millions of enterprise documents from disparate
-      content sources.
+      content sources. Beyond connectors, contributed core features such as
+      search in read-only mode, correct re-enabling of private sources after
+      admin restrictions change, service-account details for connected
+      sources, and SAML login redirect fixes.
 
   - id: query-refinement-patent
     role: elastic-sde2-workplace-search
-    dates: { start: 2019-08, end: 2020-11 }
-    tags: [patent, search, relevance, invention]
+    dates: { start: 2020-01, end: 2021-08 }
+    tags: [patent, search, relevance, invention, ruby, rails]
     description: >
-      Co-inventor on a U.S. patent for automatic search query refinement using
-      generated keyword triggers.
+      Co-inventor on a U.S. patent for search query refinement using generated
+      keyword triggers, and implementer of the Workplace Search "automatic
+      query refinement" feature it covers. Extended triggers to match the
+      current user's aliases ("updated by me"), widened the underlying
+      aggregation so less-active users still trigger, then made triggers
+      configurable per content source and exposed them through the content
+      source API.
     related: [pub-patent-12505115]
 
   - id: workplace-search-jvm-client
     role: elastic-sde2-workplace-search
-    dates: { start: 2019-08, end: 2020-11 }
-    tags: [open-source, java, jvm, api-client, sdk]
+    dates: { start: 2020-04, end: 2020-11 }
+    tags: [open-source, java, kotlin, groovy, jvm, api-client, sdk, maven, developer-experience]
     description: >
-      Built and open-sourced a JVM client for the Workplace Search API.
-    related: [proj-workplace-search-jvm-client]
+      Built and open-sourced a JVM client for the Workplace Search API (Java
+      and Kotlin, Groovy tests), plus a Maven archetype for scaffolding
+      Workplace Search Custom API Sources and example sources generated from
+      it, including a filesystem source. Colleagues later proposed both as the
+      foundation for a partner team's Java connectors.
+    links:
+      - https://github.com/seanstory/workplace-search-java
+      - https://github.com/seanstory/custom-source-archetype
+    related: [proj-workplace-search-jvm-client, pub-workplace-search-custom-sources-blog]
 
-  # --- Digital Reasoning: Senior -----------------------------------------
+  - id: ws-openapi-specs
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-06, end: 2020-07 }
+    tags: [api-design, openapi, rails, ruby, ci, api-client, cross-team]
+    description: >
+      Owned the generated OpenAPI specification for the Workplace Search API:
+      made it meet the language-clients team's requirements for generating
+      client libraries, added drift-prevention tests, migrated it from Swagger
+      2.0 to OpenAPI 3.0, added missing APIs, and restructured CI so Workplace
+      Search and App Search could each maintain their own spec.
+
+  - id: connector-lifecycle-test-suite
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-08, end: 2021-06 }
+    tags: [testing, quality, connectors, ruby, ci, automation]
+    description: >
+      Built an automated end-to-end "document lifecycle" test suite for
+      Workplace Search connectors using recorded HTTP interactions (Confluence,
+      Dropbox, GitHub Enterprise, Salesforce, OneDrive, Jira), replacing the
+      manual connector QA steps in the release checklist, and later added
+      connector scale tests to nightly CI.
+
+  - id: connector-per-document-fault-tolerance
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-09, end: 2020-10 }
+    tags: [connectors, reliability, error-handling, ruby, architecture]
+    description: >
+      Designed a connector "monitor" abstraction with configurable error
+      thresholds so syncs skip individual failing documents instead of failing
+      the whole job, rolled it out across every Workplace Search connector,
+      and added retry middleware to the base connector HTTP client.
+
+  - id: office-document-thumbnails
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-06, end: 2021-01 }
+    tags: [java, jruby, jvm, thumbnails, performance, memory, document-extraction]
+    description: >
+      Built thumbnail generation for Office documents in Workplace Search
+      results, calling Java libraries (Apache POI, XDocReport, Java2D) from
+      JRuby to render documents to images, after evaluating and rejecting a
+      slower docx-to-PDF approach. Later fixed out-of-memory errors on large
+      files by scaling before rasterizing, so image buffers start at thumbnail
+      size, cutting memory use for all Office thumbnails without losing
+      quality.
+    related: [thumbnails4j-open-source]
+
+  - id: ws-extraction-format-coverage
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-02, end: 2021-04 }
+    tags: [document-extraction, tika, connectors, ruby, microsoft-graph]
+    description: >
+      Broadened full-text extraction in Workplace Search connectors: Apache
+      Tika type detection before parsing; support for legacy OneNote, XHTML,
+      and Dropbox Paper documents; and incremental OneDrive/SharePoint document
+      syncs via the Microsoft Graph delta endpoint.
+
+  - id: ws-dev-bootstrapping-automation
+    role: elastic-sde2-workplace-search
+    dates: { start: 2019-12, end: 2021-05 }
+    tags: [developer-tooling, ruby, rails, automation, connectors, developer-experience]
+    description: >
+      Built Rails rake tasks that automatically configure Workplace Search
+      content sources (GitHub Enterprise, Confluence, Jira, Zendesk,
+      ServiceNow, Dropbox, Google Drive, Salesforce, custom sources), users,
+      groups, and role mappings from encrypted shared secrets, replacing
+      per-developer manual OAuth setup. Later made it idempotent and moved it
+      onto the public content source APIs.
+
+  - id: ws-demo-environment-pipeline
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-02, end: 2020-07 }
+    tags: [developer-tooling, demos, ruby, rails, automation, cross-team]
+    description: >
+      Built a repeatable pipeline for Workplace Search demo environments
+      (realistic exported content, snapshots, bootstrapped users and groups, a
+      final polish step), documented the build-and-ship process, and enabled
+      combined Workplace Search and App Search product demos.
+
+  - id: signet-oauth-fix
+    role: elastic-sde2-workplace-search
+    dates: { start: 2020-10, end: 2020-11 }
+    tags: [open-source, ruby, oauth]
+    description: >
+      Fixed a bug upstream in Google's Signet OAuth library (Ruby) where
+      duplicate or array query parameters were silently deduplicated.
+    links: [https://github.com/googleapis/signet/pull/174]
+
+  # ======================================================================
+  # Digital Reasoning
+  # ======================================================================
   - id: dr-data-reconciliation
     role: dr-senior
     dates: { start: 2016-03, end: 2019-08 }
@@ -282,7 +1053,6 @@ accomplishments:
       Selected as Tech Lead for the flagship Conduct Surveillance team, and
       served as Scrum Master for a team of eight.
 
-  # --- Digital Reasoning: Associate --------------------------------------
   - id: dr-synthesys-cloud
     role: dr-associate
     dates: { start: 2014-05, end: 2016-03 }
@@ -301,50 +1071,228 @@ accomplishments:
       control over multiple concurrent processing nodes.
 
 projects:
+  # --- Elastic open source ------------------------------------------------
   - id: proj-elastic-crawler
     name: Elastic Open Web Crawler
-    dates: { start: 2022-05, end: 2025-02 }
-    tags: [open-source, ruby, web-crawler]
+    dates: { start: 2022-05, end: 2026-09 }
+    tags: [open-source, ruby, jruby, web-crawler, docker]
     links: [https://github.com/elastic/crawler]
     description: >
       Ruby-based web crawler for ingesting website content into Elasticsearch,
-      open-sourced after 5+ years of internal development.
+      open-sourced after 5+ years of internal development. Continued as an
+      occasional maintainer: config fixes, slimmer Docker images to stop
+      false-positive CVE scanner hits, and a 2026 release-pipeline overhaul
+      (safe snapshot defaults, race-condition fix, release docs).
 
   - id: proj-data-extraction-service
     name: Data Extraction Service
-    dates: { start: 2022-05, end: 2025-02 }
-    tags: [open-source, python, tika, document-extraction]
-    links: [https://github.com/elastic/data-extraction-service]
+    dates: { start: 2023-05, end: 2026-01 }
+    tags: [open-source, tika, nginx, lua, docker, document-extraction, buildkite]
+    links:
+      - https://github.com/elastic/data-extraction-service
+      - https://www.elastic.co/search-labs/blog/binary-document-evolution
     description: >
-      Python/Tika service for extracting text from binary documents, used by
-      Elastic's connectors.
+      Standalone REST service for extracting text from binary documents,
+      released in beta with Elastic 8.9: an Nginx reverse proxy with Lua
+      routing in front of Tika Server, horizontally scalable, with a
+      file-pointer mode for co-located connectors to avoid sending large files
+      over the network, distributed as Docker images. Top all-time contributor.
 
   - id: proj-connectors-sdk
-    name: Elastic Connectors SDK
-    dates: { start: 2020-11, end: 2022-05 }
-    tags: [open-source, connectors, sdk]
+    name: Elastic Connectors SDK (connectors-ruby)
+    dates: { start: 2022-01, end: 2022-12 }
+    tags: [open-source, connectors, sdk, ruby]
+    links: [https://github.com/elastic/connectors-ruby]
     description: >
       SDK for building Elastic content connectors, migrated from the
       enterprise-search monorepo into its own open-source repository.
 
+  - id: proj-thumbnails4j
+    name: thumbnails4j
+    dates: { start: 2021-01, end: 2025-10 }
+    tags: [open-source, java, jvm, maven, buildkite]
+    links: [https://github.com/elastic/thumbnails4j]
+    description: >
+      Open-source Java library for generating thumbnails of Office documents,
+      PDFs, HTML, and images, published to Maven Central. Extracted from
+      Elastic Workplace Search; primary author and long-term maintainer.
+
+  - id: proj-python-elastic-agent-client
+    name: python-elastic-agent-client
+    dates: { start: 2024-03, end: 2025-02 }
+    tags: [open-source, python, grpc, protobuf, elastic-agent]
+    links: [https://github.com/elastic/python-elastic-agent-client]
+    description: >
+      Open-source Python client for Elastic Agent's gRPC control protocol,
+      built to run connectors as Elastic Agent components. Authored the
+      initial implementation and example component.
+
   - id: proj-workplace-search-jvm-client
     name: Workplace Search JVM client
-    dates: { start: 2019-08, end: 2020-11 }
-    tags: [open-source, java, jvm, api-client]
+    dates: { start: 2020-04, end: 2020-11 }
+    tags: [open-source, java, kotlin, groovy, jvm, api-client]
+    links:
+      - https://github.com/seanstory/workplace-search-java
+      - https://github.com/seanstory/custom-source-archetype
+      - https://github.com/seanstory/filesystem-workplace-search-source
     description: >
-      Open-source JVM client library for the Workplace Search API.
+      Open-source JVM client library for the Workplace Search API, with a Maven
+      archetype and example custom sources.
+
+  # --- Personal / side projects ------------------------------------------
+  - id: proj-nethys-search-ui
+    name: Archives of Nethys search UI
+    dates: { start: 2023-03, end: null }
+    tags: [open-source, search, typescript, react, web-crawler, ingest-pipelines, elasticsearch, side-project]
+    links:
+      - https://github.com/seanstory/nethys-search-ui
+      - https://seanstory.github.io/nethys-search-ui/
+    description: >
+      Public search site for the Pathfinder 2e rules archive: a React/Search UI
+      frontend backed by Elastic's web crawler, an ingest pipeline, and
+      relevance tuning, with config-as-code Make targets that rebuild the
+      whole backend from scratch. Actively maintained (e.g. recovering pages
+      the crawler missed on JavaScript-rendered listings, fixing catastrophic
+      regex backtracking in the pipeline).
+
+  - id: proj-judgement-bot
+    name: Board-game rules chatbot
+    dates: { start: 2025-12, end: 2026-01 }
+    tags: [ai-agents, rag, agent-builder, python, typescript, nextjs, elasticsearch, side-project]
+    links:
+      - https://github.com/seanstory/judgement-bot
+    description: >
+      AI rules assistant for a complex board game: a Next.js app on Elastic
+      Agent Builder APIs, with Python tooling that parses the rulebook PDF and
+      ingests it into Elasticsearch, using index and field metadata to improve
+      the agent's retrieval.
+
+  - id: proj-graphify-elasticsearch-backend
+    name: Elasticsearch backend for graphify (prototype)
+    dates: { start: 2026-07, end: 2026-07 }
+    tags: [open-source, python, elasticsearch, hybrid-search, elser, mcp, side-project, prototype]
+    links: [https://github.com/seanstory/graphify/pull/1]
+    description: >
+      Prototyped a pluggable storage-backend interface and an Elasticsearch
+      backend for a code knowledge-graph tool for AI coding assistants,
+      providing hybrid BM25 + ELSER semantic search via RRF and serving MCP
+      across multiple projects.
+
+  - id: proj-ragoldberg
+    name: RAGoldberg
+    dates: { start: 2024-10, end: 2024-10 }
+    tags: [rag, llm, docker, python, elasticsearch, demo, side-project]
+    links: [https://github.com/seanstory/ragoldberg]
+    description: >
+      Tongue-in-cheek local RAG demo that chains Docker services and
+      Elasticsearch together, with Make targets for setup and sample ingestion.
+
+  - id: proj-logstash-input-confluence-cloud
+    name: Logstash Confluence Cloud input (prototype)
+    dates: { start: 2022-05, end: 2022-06 }
+    tags: [ruby, logstash, connectors, hackathon, prototype, open-source]
+    links:
+      - https://github.com/seanstory/logstash-input-confluence-cloud
+      - https://github.com/elastic/logstash/pull/14229
+    description: >
+      Innovation-week prototype of a Logstash input plugin built on the
+      Connectors SDK to pull Confluence Cloud content, exploring Logstash as a
+      runtime for content connectors. Drove upstream SDK changes (API-key
+      auth, packaging outside Enterprise Search) and fixed Logstash's plugin
+      generator upstream, whose generated plugins failed out of the box.
+
+  - id: proj-ddos-detect
+    name: ddos-detect
+    dates: { start: 2019-06, end: 2019-06 }
+    tags: [java, groovy, kafka, maven, spock, side-project]
+    links: [https://github.com/seanstory/ddos-detect]
+    description: >
+      Personal Java/Groovy project detecting DDoS patterns in log events
+      consumed from Kafka (Maven, Spock tests, Travis CI).
 
 publications:
-  # kind: talk | blog | patent | paper
+  # kind: talk | blog | patent | paper | article
   - id: pub-patent-12505115
     kind: patent
-    title: Automatic search query refinement using generated keyword triggers
-    identifier: U.S. Patent 12,505,115
-    dates: { awarded: 2025 }
+    title: Search query refinement using generated keyword triggers
+    identifier: U.S. Patent 12,505,115 B2
+    dates: { priority: 2021-08, filed: 2022-08, awarded: 2025-12 }
     tags: [patent, search, relevance]
+    links: [https://patents.google.com/patent/US12505115B2/en]
     description: >
-      Co-inventor. Covers automatically refining search queries using generated
-      keyword triggers, from work on Elastic Workplace Search.
+      Co-inventor, with five Elastic colleagues. A system that unifies an
+      organization's content from multiple sources, dynamically assigns
+      fields, and parses user queries with configurable rules into "triggers"
+      (search, filter, and ranking terms) mapped to those fields to better
+      match user intent. From work on Elastic Workplace Search.
+
+  - id: pub-agentic-tooling-blog
+    kind: blog
+    title: Experiments in improving Agentic AI tools for Elasticsearch
+    dates: { published: 2025-10 }
+    tags: [ai-agents, retrieval, evaluation, hybrid-search, writing]
+    links: [https://www.elastic.co/search-labs/blog/ai-agent-builder-experiments-performance]
+    description: >
+      Elastic Search Labs post (sole author) on systematically evaluating and
+      improving Agent Builder's index-selection tool from a 77% baseline to
+      over 90%, covering a golden dataset and harness, metadata enrichment,
+      and a hybrid-search candidate filter.
+
+  - id: pub-binary-document-ingestion-blog
+    kind: blog
+    title: "Elasticsearch binary document ingestion: Evolution & the Data Extraction Service"
+    dates: { published: 2024-04 }
+    tags: [document-extraction, tika, open-source, ingestion, writing]
+    links: [https://www.elastic.co/search-labs/blog/binary-document-evolution]
+    description: >
+      Search Labs post (sole author) tracing Elastic's binary-document
+      extraction from in-process Tika in Workplace Search, through the
+      attachment processor, to the standalone Data Extraction Service, and
+      announcing that service's open-sourcing.
+
+  - id: pub-dls-internal-knowledge-search-blog
+    kind: blog
+    title: Adding document level security (DLS) to your internal knowledge search
+    dates: { published: 2024-01 }
+    tags: [connectors, security, document-level-security, elasticsearch, python, react, writing]
+    links: [https://www.elastic.co/search-labs/blog/dls-internal-knowledge-search]
+    description: >
+      Search Labs post (sole author) on how connectors sync access-control
+      metadata, walking through an example app (Flask + React) that mints
+      short-lived, per-persona API keys with role-descriptor query
+      restrictions.
+
+  - id: pub-workplace-search-custom-sources-blog
+    kind: blog
+    title: "Custom sources: Search content from anywhere with Elastic Workplace Search"
+    dates: { published: 2020-03 }
+    tags: [workplace-search, connectors, enterprise, writing]
+    links: [https://www.elastic.co/blog/custom-sources-search-content-from-anywhere-with-elastic-workplace-search]
+    description: >
+      Co-authored Elastic blog post on designing connectors for homegrown or
+      legacy systems: standalone vs. embedded ingestion, attribute selection,
+      document-level permissions, sync strategy, and monitoring.
+
+  - id: pub-advent-thumbnails4j
+    kind: article
+    title: Generating document thumbnails - now Open Source on the JVM
+    dates: { published: 2021-12 }
+    tags: [open-source, java, writing, community]
+    links: [https://discuss.elastic.co/t/dec-2nd-2021-en-generating-document-thumbnails-now-open-source-on-the-jvm/288270]
+    description: >
+      Elastic Discuss Advent Calendar article announcing the open-sourcing of
+      thumbnails4j.
+
+  - id: pub-advent-santas-little-helper
+    kind: article
+    title: Santa's Little Helper - Workplace Search
+    dates: { published: 2020-12 }
+    tags: [workplace-search, ruby, writing, community]
+    links: [https://discuss.elastic.co/t/dec-25th-2020-en-santa-s-little-helper-workplace-search/256691]
+    description: >
+      Elastic Discuss Advent Calendar tutorial using the Enterprise Search Ruby
+      client and Workplace Search's search API across many content sources to
+      triage work and find subject-matter experts.
 
   - id: pub-mcp-all-hands
     kind: talk
@@ -354,37 +1302,69 @@ publications:
     description: >
       Hosted a session introducing MCP to Elastic's engineering organization.
 
-  - id: pub-agentic-tooling-blog
-    kind: blog
-    title: Agentic AI tooling for Elasticsearch
-    dates: { start: 2025-02, end: 2026-06 }
-    tags: [mcp, ai-agents, writing]
+  - id: pub-rag-demo-search-all-hands
+    kind: talk
+    title: Retrieval-augmented generation (RAG) demo, Search All Hands
+    dates: { start: 2024-03, end: 2024-03 }
+    tags: [rag, public-speaking, semantic-search]
     description: >
-      Blog post on agentic AI tooling for Elasticsearch.
+      Presented a RAG demo to Elastic's Search organization all hands, and
+      co-prepared an ElasticON Tour talk on the same material.
 
 skills:
-  # evidence: ids of roles/accomplishments/projects that back the skill up.
+  # evidence: ids of roles/accomplishments/projects/publications that back
+  # the skill up. Empty evidence = claimed, but not yet backed by an entry.
   - name: Python
     category: Languages
-    evidence: [agentless-connectors, open-source-crawler-and-extraction]
+    evidence: [agentless-connectors, sharepoint-online-sync-performance, slack-connector, connectors-sync-framework-reliability]
   - name: TypeScript
     category: Languages
-    evidence: [agent-builder-connectors, context-engine-founding]
+    evidence: [agent-builder-connectors, context-engine-ai-index-foundations, elastic-claude-plugin, mcp-server-directory-readiness]
   - name: Java
     category: Languages
-    evidence: [workplace-search-jvm-client]
+    evidence: [thumbnails4j-open-source, workplace-search-jvm-client, office-document-thumbnails, dataflow-elasticsearch-timeout]
   - name: Ruby
     category: Languages
-    evidence: [open-source-crawler-and-extraction, workplace-search-contributions]
+    evidence: [ws-content-source-management-api, crawler-elasticsearch-indices-port, connectors-sdk-open-source, connector-per-document-fault-tolerance]
   - name: Kotlin
     category: Languages
-    evidence: []
+    evidence: [workplace-search-jvm-client]
+  - name: Go
+    category: Languages
+    evidence: [quick-connect-oauth-service]
+  - name: Groovy
+    category: Languages
+    evidence: [workplace-search-jvm-client, proj-ddos-detect]
+  - name: Ruby on Rails
+    category: Frameworks & APIs
+    evidence: [ws-content-source-management-api, ws-openapi-specs, ws-dev-bootstrapping-automation, crawler-elasticsearch-indices-port]
+  - name: JRuby
+    category: Frameworks & APIs
+    evidence: [office-document-thumbnails, release-management]
+  - name: React
+    category: Frameworks & APIs
+    evidence: [proj-nethys-search-ui, connectors-document-level-security]
+  - name: OpenAPI / REST API design
+    category: Frameworks & APIs
+    evidence: [ws-openapi-specs, ws-content-source-management-api]
+  - name: OAuth 2.0
+    category: Frameworks & APIs
+    evidence: [connector-oauth-and-cli, quick-connect-oauth-service, mcp-server-oauth-hardening]
+  - name: Microsoft Graph / SharePoint APIs
+    category: Frameworks & APIs
+    evidence: [sharepoint-online-dls-correctness, sharepoint-online-sync-performance, ws-extraction-format-coverage]
   - name: Elasticsearch
     category: Search & Data
-    evidence: [context-engine-founding, connectors-ingest-pipelines, dr-gdpr-deletion]
+    evidence: [context-engine-founding, connectors-ingest-pipelines, connectors-document-level-security, crawler-elasticsearch-indices-port, dr-gdpr-deletion]
   - name: Kibana
     category: Search & Data
-    evidence: [agent-builder-connectors]
+    evidence: [agent-builder-connectors, mcp-server-directory-readiness, enterprise-search-9-0-migration]
+  - name: Semantic / hybrid search (ELSER, RRF, semantic_text)
+    category: Search & Data
+    evidence: [retrieval-tool-accuracy, elser-early-integration]
+  - name: Apache Tika / document extraction
+    category: Search & Data
+    evidence: [proj-data-extraction-service, ws-extraction-format-coverage]
   - name: Spark
     category: Search & Data
     evidence: [dr-data-reconciliation, dr-spark-etl]
@@ -393,7 +1373,7 @@ skills:
     evidence: [dr-data-reconciliation, dr-gdpr-deletion]
   - name: Kafka
     category: Search & Data
-    evidence: []
+    evidence: [proj-ddos-detect]
   - name: AWS
     category: Infrastructure
     evidence: [dr-synthesys-cloud]
@@ -402,22 +1382,34 @@ skills:
     evidence: []
   - name: Docker
     category: Infrastructure
-    evidence: []
+    evidence: [connectors-unified-release-migration, proj-data-extraction-service, proj-ragoldberg]
   - name: Buildkite CI/CD
     category: Infrastructure
-    evidence: []
+    evidence: [connectors-unified-release-migration, thumbnails4j-release-modernization, connectors-ci-stewardship]
+  - name: Maven / Maven Central publishing
+    category: Infrastructure
+    evidence: [thumbnails4j-open-source, thumbnails4j-release-modernization]
   - name: Claude Code
     category: AI/Agents
-    evidence: []
+    evidence: [elastic-claude-plugin, ai-assisted-connector-development, agentic-connector-bug-bash, agent-builder-tool-review-skill]
   - name: Agentic pipelines
     category: AI/Agents
-    evidence: [agent-builder-connectors, context-engine-founding]
+    evidence: [agent-builder-connectors, context-engine-founding, workflow-tool-token-efficiency]
   - name: Context retrieval
     category: AI/Agents
-    evidence: [context-engine-founding, retrieval-tool-accuracy]
+    evidence: [context-engine-founding, retrieval-tool-accuracy, context-engine-ai-index-foundations]
   - name: MCP
     category: AI/Agents
-    evidence: [mcp-all-hands-and-blog]
+    evidence: [mcp-server-directory-readiness, elastic-claude-plugin, workplace-ai-integration-strategy, mcp-all-hands-and-blog]
+  - name: LLM evaluation
+    category: AI/Agents
+    evidence: [retrieval-tool-accuracy]
+  - name: Technical writing
+    category: Practices
+    evidence: [pub-agentic-tooling-blog, pub-binary-document-ingestion-blog, pub-dls-internal-knowledge-search-blog, connectors-developer-docs-ga]
+  - name: Release engineering
+    category: Practices
+    evidence: [connectors-unified-release-migration, release-management, thumbnails4j-release-modernization]
 
 education:
   - id: vanderbilt
