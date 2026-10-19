@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Edit",
+      "Read",
+      "WebFetch",
+      "WebSearch",
+      "Skill"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "preferredNotifChannel": "terminal_bell",
+  "skipWorkflowUsageWarning": true,
+  "verbose": true
+}

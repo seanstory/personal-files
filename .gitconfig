@@ -4,14 +4,6 @@
 [push]
 	default = simple
 	autoSetupRemote = true
-[alias]
-    prstash = "!f(){ \
-                   git checkout main        && \
-                   git fetch origin           && \
-                   (git branch -D pr/$1 || :) && \
-                   git fetch origin refs/pull-requests/$1/merge:pr/$1 && \
-                   git checkout pr/$1; \
-               };f"
 [init]
 	defaultBranch = main
 	templatedir = ~/.git-templates
@@ -22,3 +14,7 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[core]
+	excludesfile = ~/.gitignore_global
+[url "git@github.com:"]
+	insteadOf = https://github.com/

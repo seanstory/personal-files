@@ -2,3 +2,6 @@
 *.iml
 resume.pdf
 resume/out/
+
+# the global excludesfile ignores CLAUDE.md everywhere; this one is meant to be tracked
+!/claude/CLAUDE.md
