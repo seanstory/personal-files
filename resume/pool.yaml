@@ -88,10 +88,20 @@ roles:
     employer: Digital Reasoning
     title: Senior Software Engineer
     team: null
-    dates: { start: 2016-03, end: 2019-08 }
+    dates: { start: 2018-11, end: 2019-08 }
     description: >
       Senior engineer building data platforms for financial-surveillance
-      customers.
+      customers; led data reconciliation and the flagship product's release
+      process.
+
+  - id: dr-software-engineer
+    employer: Digital Reasoning
+    title: Software Engineer
+    team: null
+    dates: { start: 2016-03, end: 2018-11 }
+    description: >
+      Engineer on the flagship Conduct Surveillance product for
+      financial-surveillance customers, later its tech lead.
 
   - id: dr-associate
     employer: Digital Reasoning
@@ -1116,16 +1126,18 @@ accomplishments:
   # ======================================================================
   - id: dr-data-reconciliation
     role: dr-senior
-    dates: { start: 2016-03, end: 2019-08 }
+    dates: { start: 2018-11, end: 2019-08 }
     tags: [hadoop, spark, sql, big-data, architecture, compliance, financial-services, scale]
     description: >
-      Architected a Data Reconciliation platform that processed hundreds of
-      millions of event logs with Hadoop, Spark, and SQL to produce audit
-      compliance reports for financial-surveillance customers.
+      Architected, prototyped, and led the build of a Data Reconciliation
+      platform (Hadoop, Spark, SQL) that analyzed and exposed processing
+      results to produce audit compliance reports for financial-surveillance
+      customers. Built to handle 10 million documents per run; over time its
+      audit logs grew to hundreds of millions of entries, up to billions.
 
   - id: dr-gdpr-deletion
     role: dr-senior
-    dates: { start: 2016-03, end: 2019-08 }
+    dates: { start: 2018-11, end: 2019-08 }
     tags: [gdpr, privacy, compliance, elasticsearch, oozie, hadoop, workflow-design]
     description: >
       Designed a GDPR deletion workflow that translated customer retention
@@ -1133,21 +1145,65 @@ accomplishments:
       targeted message purging.
 
   - id: dr-streaming-ingestion
-    role: dr-senior
-    dates: { start: 2016-03, end: 2019-08 }
+    role: dr-software-engineer
+    dates: { start: 2016-03, end: 2018-11 }
     tags: [streaming, ingestion, etl, architecture, surveillance, time-to-value]
     description: >
-      Architected a streaming ingestion pipeline for email and chat surveillance
-      data, dramatically cutting the time between data delivery and
-      analyst-ready insights.
+      Took a streaming ingestion architecture for email and chat surveillance
+      data from proof of concept to a shipped feature, built to reduce
+      processing overhead and latency and shorten the time between data
+      delivery and analyst-ready insights. It shipped, though adoption was
+      modest.
 
   - id: dr-tech-lead-scrum-master
-    role: dr-senior
-    dates: { start: 2016-03, end: 2019-08 }
+    role: dr-software-engineer
+    dates: { start: 2016-03, end: 2018-11 }
     tags: [leadership, tech-lead, scrum, agile, team-of-8]
     description: >
       Selected as Tech Lead for the flagship Conduct Surveillance team, and
       served as Scrum Master for a team of eight.
+
+  - id: dr-release-process
+    role: dr-senior
+    dates: { start: 2018-11, end: 2019-08 }
+    tags: [release-engineering, leadership, ownership]
+    description: >
+      Took leadership of the release process for the company's flagship
+      product.
+
+  - id: dr-config-standardization
+    role: dr-software-engineer
+    dates: { start: 2016-03, end: 2018-11 }
+    tags: [configuration, architecture, developer-experience, enterprise]
+    description: >
+      Designed and built a standardization mechanism that reduced on-site
+      development work and allowed generic, unified configuration across
+      multiple customers.
+
+  - id: dr-chat-xml-schema
+    role: dr-software-engineer
+    dates: { start: 2016-03, end: 2018-11 }
+    tags: [java, xml, schema-design, data-modeling, surveillance]
+    description: >
+      Proposed and solidified an XML schema for chat data that unified
+      processing of disparate enterprise chat formats, and generated its Java
+      API with JAXP.
+
+  - id: dr-audio-transcription
+    role: dr-software-engineer
+    dates: { start: 2016-03, end: 2018-11 }
+    tags: [architecture, audio, transcription, surveillance]
+    description: >
+      Architected an audio transcription and playback solution for the ECOMS
+      Surveillance product.
+
+  - id: dr-intern-coordination
+    role: dr-software-engineer
+    dates: { start: 2016-03, end: 2018-11 }
+    tags: [mentoring, leadership, interns]
+    description: >
+      Coordinated summer interns to make the program a mutually beneficial
+      experience.
 
   - id: dr-synthesys-cloud
     role: dr-associate
@@ -1155,7 +1211,15 @@ accomplishments:
     tags: [aws, aws-marketplace, govcloud, cloud, packaging]
     description: >
       Developed the company's AWS Marketplace offering, Synthesys Cloud,
-      including pioneering work in AWS GovCloud.
+      including pioneering work in AWS GovCloud and an AWS Test Drive for it.
+
+  - id: dr-config-cli
+    role: dr-associate
+    dates: { start: 2014-05, end: 2016-03 }
+    tags: [python, cli, automation, configuration]
+    description: >
+      Automated configuration of the flagship product through a Python-backed
+      CLI.
 
   - id: dr-spark-etl
     role: dr-associate
@@ -1163,8 +1227,8 @@ accomplishments:
     tags: [spark, etl, distributed-systems, client-server, architecture, performance]
     description: >
       Used Apache Spark to accelerate the in-house ETL platform, then evolved it
-      into a distributed client/server architecture that supported centralized
-      control over multiple concurrent processing nodes.
+      into a multi-process client/server architecture (Jersey, Swagger, ZeroMQ)
+      that supported centralized control over distributed ETL processes.
 
 projects:
   # --- Elastic open source ------------------------------------------------
