@@ -35,9 +35,10 @@
       <div class="tagline">{{headline}}</div>
     </div>
     <div class="header-right">
-      {{profile.contact.email}}<br>
-      {{profile.contact.linkedin}}<br>
-      {{profile.contact.github}}<br>
+      <!-- Links stay clickable in the PDF; resume.css prints them as plain text. -->
+      <a href="mailto:{{profile.contact.email}}">{{profile.contact.email}}</a><br>
+      <a href="https://{{profile.contact.linkedin}}">{{profile.contact.linkedin}}</a><br>
+      <a href="https://{{profile.contact.github}}">{{profile.contact.github}}</a><br>
       {{profile.location}}
     </div>
   </div>
@@ -84,7 +85,8 @@
   <!-- Optional sections: include only when they strengthen this application
        and the page has room. Use the same .section/.entry markup.
        e.g. <h2>Projects</h2> from `projects`, <h2>Publications</h2> from
-       `publications`. In the general resume these live as bullets instead. -->
+       `publications`. In the general resume these live as bullets instead.
+       Write any URL as a link: <a href="https://example.com/x">example.com/x</a>. -->
 
   <div class="section">
     <h2>Education</h2>

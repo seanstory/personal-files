@@ -50,7 +50,7 @@ roles:
 
   - id: elastic-tech-lead-workplace-ai
     employer: Elastic
-    title: Technical Lead
+    title: Technical Lead (Principal Software Engineer)
     team: Workplace AI / Agent Builder / Extract & Transform
     dates: { start: 2025-02, end: 2026-06 }
     description: >
