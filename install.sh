@@ -203,6 +203,7 @@ setup_claude() {
   local dir="$HOME/.claude" s
   [ -d "$dir" ] || run mkdir -p "$dir"
   link claude/keybindings.json "$dir/keybindings.json"
+  link claude/statusline.sh "$dir/statusline.sh"
   link claude/CLAUDE.md "$dir/CLAUDE.personal.md"
   ensure_claude_md_import
   for s in "$REPO"/claude/skills/*/; do

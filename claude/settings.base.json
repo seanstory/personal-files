@@ -11,6 +11,10 @@
     "defaultMode": "acceptEdits"
   },
   "preferredNotifChannel": "terminal_bell",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
   "skipWorkflowUsageWarning": true,
   "verbose": true
 }

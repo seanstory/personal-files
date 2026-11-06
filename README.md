@@ -14,7 +14,7 @@ Safe to re-run on a partly set-up machine. It:
 2. Symlinks the dotfiles (`.profile`, `.bashrc`, `.gitconfig`, `.gitignore_global`, `.vimrc`, `.ssh/config`) into `~`.
 3. Symlinks the executables (`notify`) into `~/.local/bin`.
 4. Sets up Claude Code:
-   - links `claude/keybindings.json` and the `claude/skills/*` into `~/.claude/` (and `~/.agents/skills/`, if that exists)
+   - links `claude/keybindings.json`, `claude/statusline.sh`, and the `claude/skills/*` into `~/.claude/` (skills also into `~/.agents/skills/`, if that exists)
    - links `claude/CLAUDE.md` to `~/.claude/CLAUDE.personal.md` and adds an `@~/.claude/CLAUDE.personal.md` import to `~/.claude/CLAUDE.md`, which stays a local file for machine- or employer-specific instructions
    - deep-merges `claude/settings.base.json` into `~/.claude/settings.json`. Existing values win and arrays are unioned; a timestamped backup is written first.
    - adds the official plugin marketplace and installs `superpowers`
@@ -25,9 +25,16 @@ Machine-specific shell settings and secrets go in `~/.profile.local`, which `.pr
 
 ### Claude Code statusline
 
-Not in this repo. Options:
-- `/statusline <description of what you want>` in Claude Code generates a script and wires it into settings ([docs](https://code.claude.com/docs/en/statusline.md)).
-- Community presets: [ccstatusline](https://github.com/sirmalloc/ccstatusline), [starship-claude](https://github.com/martinemde/starship-claude).
+`claude/statusline.sh` renders a two-line statusline:
+
+```
+host:~/Desktop/Dev/personal-files -> Thu Nov 06  14:32:01
+Opus 5.5 | in:12.3k out:1.5k | 3t | $0.042 | ctx:8%
+```
+
+Line 2 is the model, session token counts, an approximate turn count, session cost, and context-window usage. Turns go yellow at 50 / red at 80, cost at $10 / $30, context at 60% / 80%. Needs `jq` (in the `Brewfile`) and `bc` (ships with macOS).
+
+`install.sh` links it to `~/.claude/statusline.sh`, and `settings.base.json` points `statusLine` at it. Because it's a symlink, edits made from Claude Code (e.g. via `/statusline`) land in the repo.
 
 ### Executables
 * `notify <command>` runs the command, then shows a macOS notification when it finishes. `install.sh` links it into `~/.local/bin`.
