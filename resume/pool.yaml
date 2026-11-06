@@ -437,35 +437,122 @@ accomplishments:
 
   - id: crawler-elasticsearch-indices-port
     role: elastic-principal-search-ingestion
-    dates: { start: 2022-06, end: 2022-09 }
-    tags: [web-crawler, ruby, rails, elasticsearch, architecture, migration]
+    dates: { start: 2022-05, end: 2022-09 }
+    tags: [web-crawler, app-search, ruby, rails, elasticsearch, architecture, migration, tech-lead, design-doc, leadership]
     description: >
-      Led the engineering work that moved Elastic's web crawler from App
-      Search engines onto plain Elasticsearch indices, the basis of the Elastic
-      web crawler in 8.x. Ported the crawler to an engine-independent model and
-      API, implemented an Elasticsearch output sink, added configurable crawl
-      event logging, brought over and fixed the crawler test suite, handled
+      Technical lead for decoupling Elastic's web crawler from App Search,
+      the basis of the Elastic web crawler in 8.x. Formed and ran the
+      decoupling working group, wrote the implementation design (including a
+      JRuby-vs-MRI runtime evaluation), and argued for a minimal first
+      milestone that writes straight to Elasticsearch indices rather than
+      porting every App Search crawler feature at once. During discovery,
+      proposed extracting the core crawler into a standalone library and CLI,
+      an early version of what later became the Open Crawler, and aligning
+      the crawler's data model with the new index-based connectors protocol.
+      Hands-on, ported the crawler to an engine-independent model and API,
+      implemented an Elasticsearch output sink, added configurable crawl event
+      logging, brought over and fixed the crawler test suite, handled
       read-only and blocked indices, and wrote the migration that registered
       existing crawler configurations as connector records.
-    related: [proj-elastic-crawler]
+    related: [proj-elastic-crawler, connectors-ingest-pipelines, open-crawler-lead]
+
+  - id: elastic-crawler-sustaining
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-05, end: 2025-03 }
+    tags: [web-crawler, app-search, ruby, jruby, html-parsing, reliability, bug-fix, customer-facing, triage]
+    description: >
+      Owned sustaining engineering for the App Search and 8.x Elastic web
+      crawlers. Shipped correctness fixes: purge crawls that weigh both URL
+      and crawl outcome, text extraction taking precedence over sitemap
+      detection so XML documents index correctly, and a CSS-to-XPath fallback
+      for extraction-rule selectors that browsers accept but the HTML parser
+      rejects (backported to the 8.17 line). Diagnosed a scheduling race in
+      deployments running 100+ crawlers and proposed a configurable polling
+      interval with actionable warnings instead of a hard crawler limit.
+      Filed and scoped crawler bugs found in the field (HTML4-vs-HTML5
+      parsing differences, index options that broke phrase queries on crawler
+      indices, redirects, sitemap discovery on custom crawls), and pushed for
+      automated crawler and Workplace Search tests in maintenance releases.
+    related: [proj-elastic-crawler, community-support]
+
+  - id: open-crawler-lead
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-04, end: 2026-05 }
+    tags: [web-crawler, open-source, ruby, jruby, docker, release-engineering, tech-lead, mentoring, code-review, leadership]
+    description: >
+      Engineering lead and principal reviewer for Elastic's Open Crawler, the
+      open-source successor to the Enterprise Search crawler. Reviewed nearly
+      every PR that built it out (bulk indexing, ingest pipelines, crawl and
+      extraction rules, purge crawls, binary content extraction, Docker
+      publishing, the beta release), mentoring the engineers who wrote them,
+      and filed feature requests from field feedback. Drove the move of the
+      Open Crawler, Connectors, and Data Extraction Service Docker images to a
+      new registry namespace ahead of Enterprise Search's end of life,
+      coordinating with release and infrastructure teams to publish the
+      crawler's first public images for its beta, with dual-publishing so
+      existing users saw no breaking change. Set team priorities and staffing
+      through the GA push, then took the crawler to its 1.0 GA release in
+      2026: defined the minimum release scope, delegated the release, and
+      settled where the official docs would live.
+    links:
+      - https://github.com/elastic/crawler
+      - https://www.docker.elastic.co/r/integrations/crawler
+    related: [proj-elastic-crawler, open-source-crawler-and-extraction, crawler-field-enablement]
+
+  - id: crawler-field-enablement
+    role: elastic-principal-search-ingestion
+    dates: { start: 2024-08, end: 2026-09 }
+    tags: [web-crawler, app-search, field-enablement, customer-facing, support, product, migration]
+    description: >
+      Go-to expert for solutions architects, support engineers, and
+      customers on Elastic's crawlers: crawl-rule semantics, authentication
+      options, JavaScript-rendered sites, and pitfalls when migrating off App
+      Search. Helped carry Elastic's crawler forward across four product
+      generations (Swiftype, App Search, Elastic Crawler, Open Crawler),
+      keeping the field oriented on which one fits which customer, and routed crawler requests into the formal
+      enhancement-request process with the business context product needed to
+      rank them, and advised on demo material for customers moving to
+      Elasticsearch-native search.
+    related: [community-support, open-crawler-lead]
+
+  - id: app-search-engine-triage
+    role: elastic-principal-search-ingestion
+    dates: { start: 2022-09, end: 2024-01 }
+    tags: [app-search, search-engine, relevance, synonyms, analytics, triage, supportability, customer-facing]
+    description: >
+      Turned community and support reports into scoped App Search
+      engineering issues: query suggestions returning nothing on
+      Elasticsearch-index-backed engines, multi-token synonyms matching any
+      token instead of all, field coercion errors on nested arrays, reserved
+      fields accepted into engine schemas, IPv6 addresses failing in search
+      analytics, and documentation gaps for index-backed engines.
+    related: [community-support, connectors-field-triage]
 
   - id: connectors-ingest-pipelines
     role: elastic-principal-search-ingestion
-    dates: { start: 2022-04, end: 2023-04 }
-    tags: [connectors, ingest-pipelines, machine-learning, elasticsearch, filtering, kibana, ruby, python, cross-team]
+    dates: { start: 2022-04, end: 2023-11 }
+    tags: [connectors, web-crawler, ingest-pipelines, machine-learning, elasticsearch, filtering, kibana, ruby, python, cross-team, design-doc]
     description: >
-      Shipped custom ingest pipeline support for Connectors, enabling ML
-      inference at ingest time, plus connector filtering (sync) rules. Created
-      the default ingest pipeline for connector and crawler documents, then
-      the managed generic pipeline for new search indices and per-index
-      pipeline creation in Kibana, with ML inference on by default. Made the ML
-      inference pipeline API accept full definitions. Implemented pipeline
+      Shipped custom ingest pipeline support for Connectors and the web
+      crawler, enabling ML inference at ingest time, plus connector filtering
+      (sync) rules. Wrote the design proposing that crawler output run through
+      Elasticsearch ingest pipelines, created the default ingest pipeline for
+      connector and crawler documents, then the managed generic pipeline
+      shared by every search index created in Kibana (with flags for binary
+      content extraction, whitespace reduction, and ML inference) and
+      per-index pipeline creation in Kibana, with ML inference on by default
+      in both Kibana and Elasticsearch. Made the ML inference pipeline API
+      accept full definitions. Implemented pipeline
       support in both the Ruby and Python connector clients. For filtering,
       wrote the 8.6 implementation doc, updated the connector protocol, made
       sync jobs snapshot their rules, built the first rules engine in the Ruby
       framework, and designed the connector "features" flags that tell Kibana
       which optional capabilities each connector supports, coordinating across
       the Ruby, Python, and Kibana teams.
+    links:
+      - https://github.com/elastic/kibana/pull/139595
+      - https://github.com/elastic/kibana/pull/141161
+      - https://github.com/elastic/elasticsearch/pull/102151
 
   - id: elser-early-integration
     role: elastic-principal-search-ingestion
@@ -654,15 +741,23 @@ accomplishments:
   - id: enterprise-search-9-0-migration
     role: elastic-principal-search-ingestion
     dates: { start: 2024-12, end: 2025-01 }
-    tags: [migration, deprecation, kibana, elasticsearch, upgrade, cross-team]
+    tags: [migration, deprecation, kibana, elasticsearch, upgrade, cross-team, web-crawler, app-search, workplace-search]
     description: >
-      Prepared users for the removal of Enterprise Search in 9.0: added
-      critical deprecations to Kibana's Upgrade Assistant (Enterprise Search
-      nodes, crawler connector records, invalid native connector types,
-      Agentless and Fleet Server availability) with one-click fixes where
-      possible, and coordinated a three-repo switch of the default ingest
-      pipeline across Elasticsearch, Kibana, and connectors.
-    links: [https://github.com/elastic/kibana/pull/205500]
+      Prepared users for the removal of Enterprise Search in 9.0. Designed
+      the upgrade sequence for crawler and connector users (retire the
+      Enterprise Search node, remove Elastic Crawler and unsupported connector
+      records while preserving their data, re-create native connectors
+      automatically on 9.0) and established the Open Crawler as the 9.x path
+      for crawler users. Implemented it as critical deprecations in Kibana's
+      Upgrade Assistant (Enterprise Search nodes, crawler connector records,
+      invalid native connector types, Agentless and Fleet Server
+      availability) with one-click fixes where possible, and coordinated a
+      three-repo switch of the default ingest pipeline across Elasticsearch,
+      Kibana, and connectors.
+    links:
+      - https://github.com/elastic/kibana/pull/205500
+      - https://github.com/elastic/kibana/pull/204670
+      - https://github.com/elastic/elasticsearch/pull/118899
 
   - id: native-connector-configs
     role: elastic-principal-search-ingestion
@@ -890,7 +985,7 @@ accomplishments:
   - id: workplace-search-contributions
     role: elastic-sde2-workplace-search
     dates: { start: 2019-08, end: 2021-05 }
-    tags: [search, full-text-search, enterprise, ruby, rails, jruby, elasticsearch]
+    tags: [search, search-engine, workplace-search, enterprise-search, full-text-search, enterprise, ruby, rails, jruby, elasticsearch]
     description: >
       Contributed to Elastic Workplace Search, which delivers real-time
       full-text search across millions of enterprise documents from disparate
@@ -902,11 +997,12 @@ accomplishments:
   - id: query-refinement-patent
     role: elastic-sde2-workplace-search
     dates: { start: 2020-01, end: 2021-08 }
-    tags: [patent, search, relevance, invention, ruby, rails]
+    tags: [patent, search, search-engine, relevance, query-understanding, workplace-search, invention, ruby, rails]
     description: >
       Co-inventor on a U.S. patent for search query refinement using generated
       keyword triggers, and implementer of the Workplace Search "automatic
-      query refinement" feature it covers. Extended triggers to match the
+      query refinement" feature it covers (the trigger service, which parses
+      queries into filter and ranking terms mapped to content fields). Extended triggers to match the
       current user's aliases ("updated by me"), widened the underlying
       aggregation so less-active users still trigger, then made triggers
       configurable per content source and exposed them through the content
@@ -1079,10 +1175,12 @@ projects:
     links: [https://github.com/elastic/crawler]
     description: >
       Ruby-based web crawler for ingesting website content into Elasticsearch,
-      open-sourced after 5+ years of internal development. Continued as an
-      occasional maintainer: config fixes, slimmer Docker images to stop
-      false-positive CVE scanner hits, and a 2026 release-pipeline overhaul
-      (safe snapshot defaults, race-condition fix, release docs).
+      open-sourced after 5+ years of internal development and released as 1.0
+      GA in 2026. Engineering lead and principal reviewer through its build-out
+      and GA; later an occasional maintainer: config fixes, slimmer Docker
+      images to stop false-positive CVE scanner hits, and a 2026
+      release-pipeline overhaul (safe snapshot defaults, race-condition fix,
+      release docs).
 
   - id: proj-data-extraction-service
     name: Data Extraction Service
@@ -1142,16 +1240,17 @@ projects:
   # --- Personal / side projects ------------------------------------------
   - id: proj-nethys-search-ui
     name: Archives of Nethys search UI
-    dates: { start: 2023-03, end: null }
-    tags: [open-source, search, typescript, react, web-crawler, ingest-pipelines, elasticsearch, side-project]
+    dates: { start: 2021-11, end: null }
+    tags: [open-source, search, app-search, relevance, typescript, react, web-crawler, ingest-pipelines, elasticsearch, side-project]
     links:
       - https://github.com/seanstory/nethys-search-ui
       - https://seanstory.github.io/nethys-search-ui/
     description: >
-      Public search site for the Pathfinder 2e rules archive: a React/Search UI
-      frontend backed by Elastic's web crawler, an ingest pipeline, and
-      relevance tuning, with config-as-code Make targets that rebuild the
-      whole backend from scratch. Actively maintained (e.g. recovering pages
+      Public search site for the Pathfinder 2e rules archive. Began in 2021
+      (in an earlier repo) as an App Search engine populated by a local crawl;
+      today a React/Search UI frontend backed by Elastic's web crawler, an
+      ingest pipeline, and relevance tuning, with config-as-code Make targets
+      that rebuild the whole backend from scratch. Actively maintained (e.g. recovering pages
       the crawler missed on JavaScript-rendered listings, fixing catastrophic
       regex backtracking in the pipeline).
 
@@ -1217,7 +1316,7 @@ publications:
     title: Search query refinement using generated keyword triggers
     identifier: U.S. Patent 12,505,115 B2
     dates: { priority: 2021-08, filed: 2022-08, awarded: 2025-12 }
-    tags: [patent, search, relevance]
+    tags: [patent, search, search-engine, relevance, query-understanding, workplace-search]
     links: [https://patents.google.com/patent/US12505115B2/en]
     description: >
       Co-inventor, with five Elastic colleagues. A system that unifies an
@@ -1362,6 +1461,15 @@ skills:
   - name: Semantic / hybrid search (ELSER, RRF, semantic_text)
     category: Search & Data
     evidence: [retrieval-tool-accuracy, elser-early-integration]
+  - name: Web crawling
+    category: Search & Data
+    evidence: [crawler-elasticsearch-indices-port, open-crawler-lead, elastic-crawler-sustaining, proj-elastic-crawler, proj-nethys-search-ui]
+  - name: Enterprise search engines (Workplace Search, App Search)
+    category: Search & Data
+    evidence: [workplace-search-contributions, query-refinement-patent, ws-content-source-management-api, app-search-engine-triage, enterprise-search-9-0-migration]
+  - name: Elasticsearch ingest pipelines
+    category: Search & Data
+    evidence: [connectors-ingest-pipelines, elser-early-integration]
   - name: Apache Tika / document extraction
     category: Search & Data
     evidence: [proj-data-extraction-service, ws-extraction-format-coverage]
