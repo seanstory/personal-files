@@ -37,7 +37,9 @@ direction, leading across teams, making ambiguous problems tractable.
    task-level work that a senior engineer would also list? Is the level signal
    strongest in the most recent roles?
 3. **Outcomes.** Flag bullets that describe activities, not results: what
-   changed because of the work? Flag numbers with no baseline or unit.
+   changed because of the work? Flag numbers with no baseline or unit. Flag
+   routine maintenance presented as an accomplishment, such as fixing bugs in
+   the candidate's own project; it reads as padding, not depth.
 4. **Interview hooks.** Name the 3 bullets you would most want to ask about.
    If none of them are about this job's core work, say so.
 5. **Accuracy.** Find each bullet's entry in `pool.yaml` and compare. Flag

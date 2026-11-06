@@ -16,10 +16,10 @@ body {
   line-height: 1.4;
 }
 
-/* Links stay clickable in the PDF but print like the surrounding text. */
+/* Links are clickable in the PDF and styled as standard links. */
 a {
-  color: inherit;
-  text-decoration: none;
+  color: #0645ad;
+  text-decoration: underline;
 }
 
 h1 {
