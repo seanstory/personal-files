@@ -29,7 +29,9 @@ ceiling for every claim.
   verbatim: Languages · Frameworks & APIs · Search & Data · Infrastructure ·
   AI/Agents · Practices. An item is eligible when its `evidence` includes at
   least one accomplishment id; `proj-*` ids alone don't qualify. Within a row,
-  order the items by relevance to the job.
+  order the items by depth of evidence: how much of the pool's work, and how
+  recent, stands behind each. Relevance to the job breaks ties. A thinly
+  evidenced item never leads a row just because the job asks for it.
 - **Experience:** every role, newest first. Each bullet comes from accomplishments
   whose `role` is that role, and a bullet may merge two of them. A job's
   must-have tech that the pool supports only thinly or in older work shows up in
@@ -46,7 +48,11 @@ ceiling for every claim.
    python3 -c "import re,sys;print(re.findall(rb'/Count (\d+)',open(sys.argv[1],'rb').read())[0].decode())" resume/out/<name>.pdf
    ```
    If the count is more than 2, cut the weakest bullet and rebuild.
-5. Report.
+5. Review and revise. **REQUIRED SUB-SKILL:** Use reviewing-resume. Apply the
+   merged findings worth applying, rebuild, and run a fresh round. Repeat until
+   its stop condition holds: every reviewer would advance the candidate and no
+   remaining finding is worth applying.
+6. Report.
 
 Edit only files under `resume/out/`. Problems you find in the pool belong in the
 report.
@@ -66,3 +72,5 @@ In this order:
 4. **Stretches:** any wording that goes beyond its entry's description, naming
    the entry and giving its id.
 5. **Cut for space:** strong matches that were left out, by name.
+6. **Review:** how many rounds ran, what changed, and the reviewer suggestions
+   declined, each with its reason.
