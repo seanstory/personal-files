@@ -1377,9 +1377,6 @@ skills:
   - name: AWS
     category: Infrastructure
     evidence: [dr-synthesys-cloud]
-  - name: Kubernetes
-    category: Infrastructure
-    evidence: []
   - name: Docker
     category: Infrastructure
     evidence: [connectors-unified-release-migration, proj-data-extraction-service, proj-ragoldberg]

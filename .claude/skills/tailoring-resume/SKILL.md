@@ -53,11 +53,16 @@ report.
 
 ## The report
 
+The report is for a person, not a parser. Refer to pool entries by a short
+plain-English name for the work, such as "Agentless Connectors initiative" or
+"SharePoint sync performance", not by their ids. Add the id in parentheses only
+where the reader may go edit the pool: stretches and pool problems.
+
 In this order:
 1. **Output:** paths and page count.
-2. **Bullets:** for each role, the pool ids used.
+2. **Bullets:** for each role, the entries used, by name.
 3. **Gaps:** job requirements with no pool evidence. These are not claimed on
    the page.
-4. **Stretches:** any wording that goes beyond its entry's description, with the
-   entry id.
-5. **Cut for space:** strong matches that were left out.
+4. **Stretches:** any wording that goes beyond its entry's description, naming
+   the entry and giving its id.
+5. **Cut for space:** strong matches that were left out, by name.
