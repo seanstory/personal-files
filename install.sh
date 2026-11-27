@@ -200,7 +200,7 @@ install_claude_plugins() {
 
 setup_claude() {
   say "Claude Code"
-  local dir="$HOME/.claude" s
+  local dir="$HOME/.claude" s a
   [ -d "$dir" ] || run mkdir -p "$dir"
   link claude/keybindings.json "$dir/keybindings.json"
   link claude/statusline.sh "$dir/statusline.sh"
@@ -211,6 +211,10 @@ setup_claude() {
     link "claude/skills/$s" "$dir/skills/$s"
     # other agents (Codex, Gemini, Cursor) read ~/.agents/skills, if it's in use
     [ -d "$HOME/.agents/skills" ] && link "claude/skills/$s" "$HOME/.agents/skills/$s"
+  done
+  for a in "$REPO"/claude/agents/*.md; do
+    a=$(basename "$a")
+    link "claude/agents/$a" "$dir/agents/$a"
   done
   merge_claude_settings
   install_claude_plugins

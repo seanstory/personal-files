@@ -14,7 +14,7 @@ Safe to re-run on a partly set-up machine. It:
 2. Symlinks the dotfiles (`.profile`, `.bashrc`, `.gitconfig`, `.gitignore_global`, `.vimrc`, `.ssh/config`) into `~`.
 3. Symlinks the executables (`notify`) into `~/.local/bin`.
 4. Sets up Claude Code:
-   - links `claude/keybindings.json`, `claude/statusline.sh`, and the `claude/skills/*` into `~/.claude/` (skills also into `~/.agents/skills/`, if that exists)
+   - links `claude/keybindings.json`, `claude/statusline.sh`, the `claude/skills/*` and the `claude/agents/*.md` into `~/.claude/` (skills also into `~/.agents/skills/`, if that exists)
    - links `claude/CLAUDE.md` to `~/.claude/CLAUDE.personal.md` and adds an `@~/.claude/CLAUDE.personal.md` import to `~/.claude/CLAUDE.md`, which stays a local file for machine- or employer-specific instructions
    - deep-merges `claude/settings.base.json` into `~/.claude/settings.json`. Existing values win and arrays are unioned; a timestamped backup is written first.
    - adds the official plugin marketplace and installs `superpowers`
@@ -35,6 +35,36 @@ Opus 5.5 | in:12.3k out:1.5k | 3t | $0.042 | ctx:8%
 Line 2 is the model, session token counts, an approximate turn count, session cost, and context-window usage. Turns go yellow at 50 / red at 80, cost at $10 / $30, context at 60% / 80%. Needs `jq` (in the `Brewfile`) and `bc` (ships with macOS).
 
 `install.sh` links it to `~/.claude/statusline.sh`, and `settings.base.json` points `statusLine` at it. Because it's a symlink, edits made from Claude Code (e.g. via `/statusline`) land in the repo.
+
+### Claude Code agents
+
+`claude/agents/` holds three subagents, linked into `~/.claude/agents/`. Each has a `tools` allowlist and no `Skill` tool, so it starts with a short tool list and no skills listing.
+| Agent | Does | Changes things? |
+|---|---|---|
+| `researcher` | Gathers cited evidence from the repo, git and GitHub history, and the web. Marks each claim verified or unverified. | Told not to; it has Bash, so this is not enforced |
+| `architect` | Writes a design spec to `~/.superpowers/specs/`, or reviews a spec another architect wrote. As an author it dispatches the researcher for facts and a second architect for review. | Told to write only the spec file |
+| `product-manager` | Reviews a spec from the user's side, or opens a running result in a headless browser and checks each acceptance criterion with screenshots. | No files; it does use the app it is checking |
+
+For a design conversation, run the architect as the session (`claude --agent architect`); as a subagent it cannot ask questions and records its assumptions in the spec instead. Its `Agent(researcher, architect)` restriction is also only enforced when it is the session; as a subagent it is told to keep to those two. The other two are meant to be dispatched.
+
+The researcher here has portable tools only. On a machine with chat or internal-docs MCP servers, keep a local `~/.claude/agents/researcher.md` that adds those tools to the allowlist; `install.sh` leaves a differing local file alone. If `install.sh` has already linked it, replace the symlink with a copy before editing, or the machine-specific tools end up in this repo.
+
+**Requires:**
+- `npx` from a current Node.js LTS on PATH for the product-manager, which starts a pinned version of [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools. When bumping the version, check that the tool names under `disallowedTools` in `product-manager.md` still exist; a renamed tool is no longer blocked.
+- Optional: a local, unauthenticated [Hindsight](https://github.com/vectorize-io/hindsight) server at `http://localhost:8888` for agent memory. Each agent recalls from and retains to its own bank (`agent::<name>`), which must be created and limited to those two tools before first use:
+
+  ```sh
+  for a in researcher architect product-manager; do
+    b="localhost:8888/v1/default/banks/agent%3A%3A$a"
+    curl -fsS -o /dev/null -X PUT "$b" -H 'Content-Type: application/json' -d "{\"name\":\"$a\"}" &&
+    curl -fsS -X PATCH "$b/config" -H 'Content-Type: application/json' -d '{"updates":{"mcp_enabled_tools":["recall","retain"]}}' |
+      grep -q '"mcp_enabled_tools":\["recall","retain"\]' && echo "$a ok" || { echo "$a FAILED: do not use this bank until fixed"; break; }
+  done
+  ```
+
+  The second call matters. A dispatched subagent is handed every tool its own MCP server offers, whatever its `tools` allowlist says, and the bank's endpoint otherwise offers ones that delete memories or the bank itself. Without the server the agents work and skip the memory step.
+
+The `record-agent-lesson` skill is the other half of that memory: the main session uses it to record how an agent's work turned out when the agent was not around to see it.
 
 ### Executables
 * `notify <command>` runs the command, then shows a macOS notification when it finishes. `install.sh` links it into `~/.local/bin`.
