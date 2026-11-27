@@ -20,6 +20,8 @@ def call(bank, path, body):
             cfg = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json")))
         except (OSError, ValueError):
             cfg = {}
+        if not isinstance(cfg, dict):
+            cfg = {}
         if str(cfg.get("apiUrl", "")).rstrip("/") == base:
             token = cfg.get("apiToken")
     headers = {"Content-Type": "application/json"}
@@ -46,8 +48,8 @@ bank = f"agent::{a.agent}"
 
 if a.action == "record":
     text = sys.stdin.read().strip()
-    if not a.title or not text:
-        sys.exit("record needs --title and the lesson text on stdin")
+    if a.query or not a.title or not text:
+        sys.exit("record takes --title and the lesson text on stdin, not as an argument")
     item = {"content": f"{a.title}\n\n{text}", "context": f"lesson for the {a.agent} agent, recorded by the session that saw the outcome", "tags": ["lesson", "source:main-session"]}
     print(json.dumps(call(bank, "/memories", {"items": [item], "async": False}), indent=1)[:600])
 else:
