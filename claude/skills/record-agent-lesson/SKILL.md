@@ -8,10 +8,12 @@ description: Use when the outcome of work done by the researcher, architect or p
 Each roster agent keeps its own Hindsight bank (`agent::researcher`, `agent::architect`, `agent::product-manager`) and recalls from it at the start of a task. An agent can record what it sees for itself, but most outcomes arrive after it has finished: you or the user find out days later whether its design held up or its finding was real. This skill is how that outcome reaches the agent.
 
 ```bash
+# 1. see what the agent already holds on the topic
+python3 ~/.claude/skills/record-agent-lesson/record.py recall <agent> "<query>"
+# 2. record what is new
 python3 ~/.claude/skills/record-agent-lesson/record.py record <agent> --title "<short title>" <<'EOF'
 <lesson>
 EOF
-python3 ~/.claude/skills/record-agent-lesson/record.py recall <agent> "<query>"
 ```
 
 ## What makes a lesson worth recording
@@ -22,7 +24,7 @@ Record it when there is an outcome with evidence behind it, and the lesson would
 - **Outcome:** what happened, and who or what settled it (the user's decision, a failing test, a production bug, a reviewer's concession). Quote the user's words when they are the evidence.
 - **Lesson:** what to do differently, or keep doing, stated as the check or habit and the condition it applies under.
 
-One lesson per call. Recall first with a query on the same topic: if a similar lesson is already there, record only what is new, or the correction if the old one was wrong.
+One lesson per call. If the recall shows a similar lesson is already there, record only what is new, or the correction if the old one was wrong.
 
 ## What does not belong
 

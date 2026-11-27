@@ -54,7 +54,7 @@ Then look past the criteria, because "works" and "looks right" are different fin
 - **Console and network:** errors logged while you used the page, and failed requests.
 - **Consistency:** does it look and behave like the product around it?
 
-Take screenshots without a `filename`, or with an absolute one under `/tmp/claude-product-manager`; a relative name can be resolved against the project directory and leave an image in the repo. Every finding and every criterion cites the path the screenshot call returned.
+Take screenshots without a `filename`, or with an absolute one under `/tmp/claude-product-manager`; a relative name can be resolved against the project directory and leave an image in the repo. Every finding and every criterion you reached cites the path the screenshot call returned; a blocked criterion cites what stopped you, with a screenshot of that if there is one.
 
 Report:
 
@@ -62,7 +62,7 @@ Report:
 Verdict: PASS | FAIL | BLOCKED
 
 Criteria
-1. <criterion> - pass|fail|blocked - <screenshot path> - <one line on what you saw>
+1. <criterion> - pass|fail|blocked - <screenshot path, or the blocker> - <one line on what you saw>
 
 Other findings
 - [high|medium|low] <where>: what a user would see, <screenshot path>

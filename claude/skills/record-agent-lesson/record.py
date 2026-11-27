@@ -7,27 +7,25 @@
 import argparse, json, os, sys, urllib.error, urllib.parse, urllib.request
 
 AGENTS = ("researcher", "architect", "product-manager")
+# Must be the server in the agent-memory url of claude/agents/*.md, or lessons
+# recorded here land where the agents never recall from.
+SERVER = "http://localhost:8888"
 
 
 def call(bank, path, body):
-    # Same server the agents' own memory tools point at. The Hindsight plugin's
-    # config may hold a token for a different server (e.g. Hindsight Cloud), so
-    # its token is used only when its apiUrl is the server being called.
-    base = os.environ.get("HINDSIGHT_API_URL", "http://localhost:8888").rstrip("/")
-    token = os.environ.get("HINDSIGHT_API_TOKEN")
-    if not token:
-        try:
-            cfg = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json")))
-        except (OSError, ValueError):
-            cfg = {}
-        if not isinstance(cfg, dict):
-            cfg = {}
-        if str(cfg.get("apiUrl", "")).rstrip("/") == base:
-            token = cfg.get("apiToken")
+    # The config token may be for another server (e.g. Hindsight Cloud), so it
+    # is used only when the config's apiUrl is this one.
+    token = None
+    try:
+        cfg = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json")))
+    except (OSError, ValueError):
+        cfg = {}
+    if isinstance(cfg, dict) and str(cfg.get("apiUrl", "")).rstrip("/") == SERVER:
+        token = cfg.get("apiToken")
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
-    url = f"{base}/v1/default/banks/{urllib.parse.quote(bank, safe='')}{path}"
+    url = f"{SERVER}/v1/default/banks/{urllib.parse.quote(bank, safe='')}{path}"
     req = urllib.request.Request(url, json.dumps(body).encode(), headers)
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
@@ -35,7 +33,7 @@ def call(bank, path, body):
     except urllib.error.HTTPError as e:
         sys.exit(f"Hindsight returned {e.code} for {bank}: {e.read().decode(errors='replace')[:300]}")
     except OSError as e:
-        sys.exit(f"could not reach Hindsight at {base}: {e}")
+        sys.exit(f"could not reach Hindsight at {SERVER}: {e}")
 
 
 p = argparse.ArgumentParser()
