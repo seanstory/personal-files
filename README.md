@@ -38,8 +38,7 @@ Line 2 is the model, session token counts, an approximate turn count, session co
 
 ### Claude Code agents
 
-`claude/agents/` holds three subagents, linked into `~/.claude/agents/`. Each has a `tools` allowlist and no `Skill` tool, so it starts with a short tool list and no skills listing. When an agent is dispatched as a subagent, the allowlist does not filter the tools of an MCP server the agent defines for itself, so each file also lists the memory server's other tools under `disallowedTools`. If a Hindsight upgrade adds tools, add them there.
-
+`claude/agents/` holds three subagents, linked into `~/.claude/agents/`. Each has a `tools` allowlist and no `Skill` tool, so it starts with a short tool list and no skills listing.
 | Agent | Does | Changes things? |
 |---|---|---|
 | `researcher` | Gathers cited evidence from the repo, git and GitHub history, and the web. Marks each claim verified or unverified. | Told not to; it has Bash, so this is not enforced |
@@ -52,7 +51,17 @@ The researcher here has portable tools only. On a machine with chat or internal-
 
 **Requires:**
 - `npx` from a current Node.js LTS on PATH for the product-manager, which starts [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools.
-- Optional: a [Hindsight](https://github.com/vectorize-io/hindsight) server at `http://localhost:8888` for agent memory. Each agent recalls from and retains to its own bank (`agent::<name>`), which must exist before first use: `curl -X PUT localhost:8888/v1/default/banks/agent%3A%3A<name> -H 'Content-Type: application/json' -d '{"name":"<name>"}'`. Without the server the agents work and skip the memory step.
+- Optional: a local, unauthenticated [Hindsight](https://github.com/vectorize-io/hindsight) server at `http://localhost:8888` for agent memory. Each agent recalls from and retains to its own bank (`agent::<name>`), which must be created and limited to those two tools before first use:
+
+  ```sh
+  for a in researcher architect product-manager; do
+    b="localhost:8888/v1/default/banks/agent%3A%3A$a"
+    curl -X PUT "$b" -H 'Content-Type: application/json' -d "{\"name\":\"$a\"}"
+    curl -X PATCH "$b/config" -H 'Content-Type: application/json' -d '{"updates":{"mcp_enabled_tools":["recall","retain"]}}'
+  done
+  ```
+
+  The second call matters. A dispatched subagent is handed every tool its own MCP server offers, whatever its `tools` allowlist says, and the bank's endpoint otherwise offers ones that delete memories or the bank itself. Without the server the agents work and skip the memory step.
 
 The `record-agent-lesson` skill is the other half of that memory: the main session uses it to record how an agent's work turned out when the agent was not around to see it.
 

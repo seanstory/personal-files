@@ -4,29 +4,18 @@
   record.py record <agent> --title "..."  < lesson.txt
   record.py recall <agent> "query"
 """
-import argparse, json, os, sys, urllib.error, urllib.parse, urllib.request
+import argparse, json, sys, urllib.error, urllib.parse, urllib.request
 
 AGENTS = ("researcher", "architect", "product-manager")
 # Must be the server in the agent-memory url of claude/agents/*.md, or lessons
-# recorded here land where the agents never recall from.
+# recorded here land where the agents never recall from. It is local and
+# unauthenticated, like the agents' own connection, so no credential is sent.
 SERVER = "http://localhost:8888"
 
 
 def call(bank, path, body):
-    # The config token may be for another server (e.g. Hindsight Cloud), so it
-    # is used only when the config's apiUrl is this one.
-    token = None
-    try:
-        cfg = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json")))
-    except (OSError, ValueError):
-        cfg = {}
-    if isinstance(cfg, dict) and str(cfg.get("apiUrl", "")).rstrip("/") == SERVER:
-        token = cfg.get("apiToken")
-    headers = {"Content-Type": "application/json"}
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
     url = f"{SERVER}/v1/default/banks/{urllib.parse.quote(bank, safe='')}{path}"
-    req = urllib.request.Request(url, json.dumps(body).encode(), headers)
+    req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
             return json.load(resp)
