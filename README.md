@@ -47,7 +47,7 @@ Line 2 is the model, session token counts, an approximate turn count, session co
 
 For a design conversation, run the architect as the session (`claude --agent architect`); as a subagent it cannot ask questions and records its assumptions in the spec instead. Its `Agent(researcher, architect)` restriction is also only enforced when it is the session; as a subagent it is told to keep to those two. The other two are meant to be dispatched.
 
-The researcher here has portable tools only. On a machine with chat or internal-docs MCP servers, keep a local `~/.claude/agents/researcher.md` that adds those tools to the allowlist; `install.sh` leaves a differing local file alone.
+The researcher here has portable tools only. On a machine with chat or internal-docs MCP servers, keep a local `~/.claude/agents/researcher.md` that adds those tools to the allowlist; `install.sh` leaves a differing local file alone. If `install.sh` has already linked it, replace the symlink with a copy before editing, or the machine-specific tools end up in this repo.
 
 **Requires:**
 - `npx` from a current Node.js LTS on PATH for the product-manager, which starts [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools.
@@ -56,8 +56,9 @@ The researcher here has portable tools only. On a machine with chat or internal-
   ```sh
   for a in researcher architect product-manager; do
     b="localhost:8888/v1/default/banks/agent%3A%3A$a"
-    curl -X PUT "$b" -H 'Content-Type: application/json' -d "{\"name\":\"$a\"}"
-    curl -X PATCH "$b/config" -H 'Content-Type: application/json' -d '{"updates":{"mcp_enabled_tools":["recall","retain"]}}'
+    curl -fsS -o /dev/null -X PUT "$b" -H 'Content-Type: application/json' -d "{\"name\":\"$a\"}" &&
+    curl -fsS -X PATCH "$b/config" -H 'Content-Type: application/json' -d '{"updates":{"mcp_enabled_tools":["recall","retain"]}}' |
+      grep -q '"mcp_enabled_tools":\["recall","retain"\]' && echo "$a ok" || { echo "$a FAILED: do not use this bank until fixed"; break; }
   done
   ```
 
