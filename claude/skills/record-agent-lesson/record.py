@@ -25,7 +25,7 @@ def call(bank, path, body=None):
     except urllib.error.HTTPError as e:
         sys.exit(f"Hindsight returned {e.code} for {bank}: {e.read().decode(errors='replace')[:300]}")
     except TimeoutError:
-        sys.exit(f"Hindsight did not answer in time; the write may still have landed, so check with recall before retrying")
+        sys.exit("Hindsight did not answer in time; the write may still have landed, so check with recall before retrying")
     except OSError as e:
         sys.exit(f"could not reach Hindsight at {SERVER}: {e}")
 
