@@ -8,8 +8,12 @@
       "WebSearch",
       "Skill",
       "mcp__playwright__*",
-      "mcp__agent-memory__recall",
-      "mcp__agent-memory__retain"
+      "mcp__memory-researcher__recall",
+      "mcp__memory-researcher__retain",
+      "mcp__memory-architect__recall",
+      "mcp__memory-architect__retain",
+      "mcp__memory-product-manager__recall",
+      "mcp__memory-product-manager__retain"
     ],
     "defaultMode": "acceptEdits"
   },

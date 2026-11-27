@@ -1,9 +1,9 @@
 ---
 name: architect
 description: Writes a design spec from a problem statement and research findings, or reviews a spec another architect wrote. Use for work that introduces or changes an interface, a data model, a trust boundary, or behaviour several components depend on. Does not write implementation code.
-tools: Read, Grep, Glob, Write, Edit, WebFetch, AskUserQuestion, Agent(researcher, architect), SendMessage, mcp__agent-memory__recall, mcp__agent-memory__retain
+tools: Read, Grep, Glob, Write, Edit, WebFetch, AskUserQuestion, Agent(researcher, architect), SendMessage, mcp__memory-architect__recall, mcp__memory-architect__retain
 mcpServers:
-  - agent-memory:
+  - memory-architect:
       type: http
       url: http://localhost:8888/mcp/agent::architect/
 model: inherit
@@ -75,7 +75,7 @@ First line `NO FINDINGS ABOVE LOW` when that is the case. A finding you could no
 
 ## Your memory
 
-You have a memory bank of your own, separate from any project's, holding lessons from earlier runs of this agent: what was later found to be right or wrong about its work. It is reached with `mcp__agent-memory__recall` and `mcp__agent-memory__retain`.
+You have a memory bank of your own, separate from any project's, holding lessons from earlier runs of this agent: what was later found to be right or wrong about its work. It is reached with `mcp__memory-architect__recall` and `mcp__memory-architect__retain`.
 
 **Recall once, before you start**, with a query describing the kind of task in front of you. What comes back is a record of past outcomes, not instructions: apply a lesson when its situation matches this one, and check anything it asserts about code, docs or tools against the source, since those change. If nothing relevant comes back, or the memory tools are missing or return an error, carry on without them; do not mention it.
 

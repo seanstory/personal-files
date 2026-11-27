@@ -7,20 +7,23 @@
 import argparse, json, sys, urllib.error, urllib.parse, urllib.request
 
 AGENTS = ("researcher", "architect", "product-manager")
-# Must be the server in the agent-memory url of claude/agents/*.md, or lessons
+# Must be the server in the memory-<name> url of claude/agents/*.md, or lessons
 # recorded here land where the agents never recall from. It is local and
 # unauthenticated, like the agents' own connection, so no credential is sent.
 SERVER = "http://localhost:8888"
 
 
-def call(bank, path, body):
+def call(bank, path, body=None):
     url = f"{SERVER}/v1/default/banks/{urllib.parse.quote(bank, safe='')}{path}"
-    req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json"})
+    data = None if body is None else json.dumps(body).encode()
+    req = urllib.request.Request(url, data, {"Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
             return json.load(resp)
     except urllib.error.HTTPError as e:
         sys.exit(f"Hindsight returned {e.code} for {bank}: {e.read().decode(errors='replace')[:300]}")
+    except TimeoutError:
+        sys.exit(f"Hindsight did not answer in time; the write may still have landed, so check with recall before retrying")
     except OSError as e:
         sys.exit(f"could not reach Hindsight at {SERVER}: {e}")
 
@@ -39,6 +42,10 @@ if a.action == "record":
     text = sys.stdin.read().strip()
     if a.query or not a.title or not text:
         sys.exit("record takes --title and the lesson text on stdin, not as an argument")
+    # Retaining to a bank that does not exist creates it with every MCP tool
+    # enabled, including the ones that delete it. Only write to a prepared bank.
+    if call(bank, "/config").get("config", {}).get("mcp_enabled_tools") != ["recall", "retain"]:
+        sys.exit(f"{bank} is not set up: run the bank setup in the repo README (Claude Code agents, Requires) first")
     item = {"content": f"{a.title}\n\n{text}", "context": f"lesson for the {a.agent} agent, recorded by the session that saw the outcome", "tags": ["lesson", "source:main-session"]}
     print(json.dumps(call(bank, "/memories", {"items": [item], "async": False}), indent=1)[:600])
 else:
