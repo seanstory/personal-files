@@ -6,7 +6,10 @@
       "Read",
       "WebFetch",
       "WebSearch",
-      "Skill"
+      "Skill",
+      "mcp__playwright__*",
+      "mcp__agent-memory__recall",
+      "mcp__agent-memory__retain"
     ],
     "defaultMode": "acceptEdits"
   },
