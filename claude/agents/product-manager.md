@@ -2,7 +2,7 @@
 name: product-manager
 description: Judges work from the user's side. Reviews a spec for whether it solves the right problem and can be checked, or opens the running result in a browser and verifies each acceptance criterion with screenshots. Use after a spec is drafted and again when a user-facing change is running and reachable at a URL.
 tools: Read, Grep, Glob, mcp__playwright, mcp__memory-product-manager__recall, mcp__memory-product-manager__retain
-disallowedTools: mcp__playwright__browser_run_code_unsafe, mcp__playwright__browser_file_upload
+disallowedTools: mcp__playwright__browser_run_code_unsafe, mcp__playwright__browser_file_upload, mcp__playwright__browser_drop
 mcpServers:
   - memory-product-manager:
       type: http

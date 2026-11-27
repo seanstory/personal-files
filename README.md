@@ -50,7 +50,7 @@ For a design conversation, run the architect as the session (`claude --agent arc
 The researcher here has portable tools only. On a machine with chat or internal-docs MCP servers, keep a local `~/.claude/agents/researcher.md` that adds those tools to the allowlist; `install.sh` leaves a differing local file alone. If `install.sh` has already linked it, replace the symlink with a copy before editing, or the machine-specific tools end up in this repo.
 
 **Requires:**
-- `npx` from a current Node.js LTS on PATH for the product-manager, which starts a pinned version of [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools. When bumping the version, check that the two tool names under `disallowedTools` in `product-manager.md` still exist; a renamed tool is no longer blocked.
+- `npx` from a current Node.js LTS on PATH for the product-manager, which starts a pinned version of [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools. When bumping the version, check that the tool names under `disallowedTools` in `product-manager.md` still exist; a renamed tool is no longer blocked.
 - Optional: a local, unauthenticated [Hindsight](https://github.com/vectorize-io/hindsight) server at `http://localhost:8888` for agent memory. Each agent recalls from and retains to its own bank (`agent::<name>`), which must be created and limited to those two tools before first use:
 
   ```sh
