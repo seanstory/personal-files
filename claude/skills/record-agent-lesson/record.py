@@ -11,6 +11,8 @@ AGENTS = ("researcher", "architect", "product-manager")
 # recorded here land where the agents never recall from. It is local and
 # unauthenticated, like the agents' own connection, so no credential is sent.
 SERVER = "http://localhost:8888"
+# Loopback only: never route lesson text through a configured proxy.
+OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 
 def call(bank, path, body=None):
@@ -18,7 +20,7 @@ def call(bank, path, body=None):
     data = None if body is None else json.dumps(body).encode()
     req = urllib.request.Request(url, data, {"Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
+        with OPENER.open(req, timeout=120) as resp:
             return json.load(resp)
     except urllib.error.HTTPError as e:
         sys.exit(f"Hindsight returned {e.code} for {bank}: {e.read().decode(errors='replace')[:300]}")

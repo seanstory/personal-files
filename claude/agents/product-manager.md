@@ -44,7 +44,7 @@ You need three things from the brief: the spec path (or the acceptance criteria 
 Work through the criteria one at a time with the browser tools:
 
 1. Do what the criterion describes, as that user would: navigate, click, type.
-2. Take a screenshot of the state that proves or disproves it, and look at the screenshot before you judge. The accessibility snapshot tells you what is on the page; only the image tells you how it looks.
+2. Take a screenshot of the state that proves or disproves it, and look at the screenshot before you judge. If the call did not return the image itself, open the saved file with Read. The accessibility snapshot tells you what is on the page; only the image tells you how it looks.
 3. Record pass or fail. A criterion you could not reach is `blocked`, with what stopped you, never a pass.
 
 Then look past the criteria, because "works" and "looks right" are different findings:
