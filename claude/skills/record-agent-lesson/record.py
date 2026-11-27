@@ -4,20 +4,33 @@
   record.py record <agent> --title "..."  < lesson.txt
   record.py recall <agent> "query"
 """
-import argparse, json, os, sys, urllib.parse, urllib.request
+import argparse, json, os, sys, urllib.error, urllib.parse, urllib.request
 
 AGENTS = ("researcher", "architect", "product-manager")
 
 
 def call(bank, path, body):
-    cfg = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json")))
-    url = f"{cfg['apiUrl'].rstrip('/')}/v1/default/banks/{urllib.parse.quote(bank, safe='')}{path}"
+    # Same server the agents' own memory tools point at. The token, if the
+    # server needs one, comes from the Hindsight plugin's config when present.
+    base = os.environ.get("HINDSIGHT_API_URL", "http://localhost:8888").rstrip("/")
+    token = os.environ.get("HINDSIGHT_API_TOKEN")
+    if not token:
+        try:
+            token = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json"))).get("apiToken")
+        except (OSError, ValueError):
+            token = None
     headers = {"Content-Type": "application/json"}
-    if cfg.get("apiToken"):
-        headers["Authorization"] = f"Bearer {cfg['apiToken']}"
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    url = f"{base}/v1/default/banks/{urllib.parse.quote(bank, safe='')}{path}"
     req = urllib.request.Request(url, json.dumps(body).encode(), headers)
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        return json.load(resp)
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            return json.load(resp)
+    except urllib.error.HTTPError as e:
+        sys.exit(f"Hindsight returned {e.code} for {bank}: {e.read().decode(errors='replace')[:300]}")
+    except OSError as e:
+        sys.exit(f"could not reach Hindsight at {base}: {e}")
 
 
 p = argparse.ArgumentParser()

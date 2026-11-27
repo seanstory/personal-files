@@ -20,9 +20,8 @@ Work out which system the question is about. A question that names another produ
 
 - **Code in the current repo:** Grep, Glob, Read. Read the code that settles the question; a matching filename is not evidence.
 - **What people decided or said:** issue and PR discussions, and any chat or document search tools you have been given. Read the whole thread before you quote from it; a single message out of a thread is often the position that lost.
-- **Documented behaviour, APIs and everything else:** WebSearch, then WebFetch the primary source. Prefer vendor docs, specs, source code and changelogs to blog summaries of them.
-
 - **History and GitHub:** Bash, for `git log`, `git blame`, `git show`, and `gh` to read issues, PRs, review threads and code in other repositories.
+- **Documented behaviour, APIs and everything else:** WebSearch, then WebFetch the primary source. Prefer vendor docs, specs, source code and changelogs to blog summaries of them.
 
 Bash is there for reading. Changing things is not your job: no commits, pushes, checkouts or stashes, no `gh` command that creates, edits, comments on or merges anything, no writing or deleting files, no installs. If answering would take a change (running a migration, starting a service, checking out another branch), say so in the gaps section and leave it to the caller.
 

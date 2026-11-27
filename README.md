@@ -42,11 +42,11 @@ Line 2 is the model, session token counts, an approximate turn count, session co
 
 | Agent | Does | Changes things? |
 |---|---|---|
-| `researcher` | Gathers cited evidence from the repo, git and GitHub history, and the web. Marks each claim verified or unverified. | No |
-| `architect` | Writes a design spec to `~/.superpowers/specs/`, or reviews a spec another architect wrote. As an author it dispatches the researcher for facts and a second architect for review. | Only the spec file |
-| `product-manager` | Reviews a spec from the user's side, or opens a running result in a headless browser and checks each acceptance criterion with screenshots. | No |
+| `researcher` | Gathers cited evidence from the repo, git and GitHub history, and the web. Marks each claim verified or unverified. | Told not to; it has Bash, so this is not enforced |
+| `architect` | Writes a design spec to `~/.superpowers/specs/`, or reviews a spec another architect wrote. As an author it dispatches the researcher for facts and a second architect for review. | Told to write only the spec file |
+| `product-manager` | Reviews a spec from the user's side, or opens a running result in a headless browser and checks each acceptance criterion with screenshots. | No files; it does use the app it is checking |
 
-For a design conversation, run the architect as the session (`claude --agent architect`); as a subagent it cannot ask questions and records its assumptions in the spec instead. The other two are meant to be dispatched.
+For a design conversation, run the architect as the session (`claude --agent architect`); as a subagent it cannot ask questions and records its assumptions in the spec instead. Its `Agent(researcher, architect)` restriction is also only enforced when it is the session; as a subagent it is told to keep to those two. The other two are meant to be dispatched.
 
 The researcher here has portable tools only. On a machine with chat or internal-docs MCP servers, keep a local `~/.claude/agents/researcher.md` that adds those tools to the allowlist; `install.sh` leaves a differing local file alone.
 
