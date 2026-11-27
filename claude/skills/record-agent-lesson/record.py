@@ -45,6 +45,8 @@ a = p.parse_args()
 bank = f"agent::{a.agent}"
 
 if a.action == "record":
+    if sys.stdin.isatty():
+        sys.exit("pipe the lesson text on stdin")
     text = sys.stdin.read().strip()
     if a.query or not a.title or not text:
         sys.exit("record takes --title and the lesson text on stdin, not as an argument")

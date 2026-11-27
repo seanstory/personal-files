@@ -38,7 +38,7 @@ Line 2 is the model, session token counts, an approximate turn count, session co
 
 ### Claude Code agents
 
-`claude/agents/` holds three subagents, linked into `~/.claude/agents/`. Each has a `tools` allowlist and no `Skill` tool, so it starts with a short tool list and no skills listing.
+`claude/agents/` holds three subagents, linked into `~/.claude/agents/`. Each has a `tools` allowlist and no `Skill` tool, so it starts with a short tool list and no skills listing. When an agent is dispatched as a subagent, the allowlist does not filter the tools of an MCP server the agent defines for itself, so each file also lists the memory server's other tools under `disallowedTools`. If a Hindsight upgrade adds tools, add them there.
 
 | Agent | Does | Changes things? |
 |---|---|---|

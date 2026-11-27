@@ -28,7 +28,7 @@ One lesson per call. If the recall shows a similar lesson is already there, reco
 
 ## What does not belong
 
-- **Facts about one repository or project.** Those go in that repo's memory (`hindsight_ingest_document`), where every session in the repo finds them. An agent's bank is for how it should work anywhere.
+- **Facts about one repository or project.** Those go in that repo's own memory if it has one (with the Hindsight coding-agent plugin, `hindsight_ingest_document`), where every session in the repo finds them. An agent's bank is for how it should work anywhere.
 - **Routine results.** "The spec was approved" teaches nothing unless something about how it was written is why.
 - **A lesson drawn from one loud opinion.** If the user overruled a reviewer's finding because of a constraint the reviewer could not have known, the lesson is "ask for that constraint in the brief", not "stop raising that kind of finding". Lessons that tell a reviewer to raise less need the stronger evidence: the finding was checked and was wrong.
 - **Your guess at the outcome.** If the result is not in yet, wait.
