@@ -212,6 +212,11 @@ setup_claude() {
     # other agents (Codex, Gemini, Cursor) read ~/.agents/skills, if it's in use
     [ -d "$HOME/.agents/skills" ] && link "claude/skills/$s" "$HOME/.agents/skills/$s"
   done
+  local a
+  for a in "$REPO"/claude/agents/*.md; do
+    a=$(basename "$a")
+    link "claude/agents/$a" "$dir/agents/$a"
+  done
   merge_claude_settings
   install_claude_plugins
 }
