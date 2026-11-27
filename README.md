@@ -51,7 +51,7 @@ For a design conversation, run the architect as the session (`claude --agent arc
 The researcher here has portable tools only. On a machine with chat or internal-docs MCP servers, keep a local `~/.claude/agents/researcher.md` that adds those tools to the allowlist; `install.sh` leaves a differing local file alone.
 
 **Requires:**
-- `npx` on PATH for the product-manager, which starts [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools.
+- `npx` from a current Node.js LTS on PATH for the product-manager, which starts [Playwright MCP](https://github.com/microsoft/playwright-mcp) for itself. No other session sees those tools.
 - Optional: a [Hindsight](https://github.com/vectorize-io/hindsight) server at `http://localhost:8888` for agent memory. Each agent recalls from and retains to its own bank (`agent::<name>`), which must exist before first use: `curl -X PUT localhost:8888/v1/default/banks/agent%3A%3A<name> -H 'Content-Type: application/json' -d '{"name":"<name>"}'`. Without the server the agents work and skip the memory step.
 
 The `record-agent-lesson` skill is the other half of that memory: the main session uses it to record how an agent's work turned out when the agent was not around to see it.

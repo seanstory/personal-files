@@ -10,15 +10,18 @@ AGENTS = ("researcher", "architect", "product-manager")
 
 
 def call(bank, path, body):
-    # Same server the agents' own memory tools point at. The token, if the
-    # server needs one, comes from the Hindsight plugin's config when present.
+    # Same server the agents' own memory tools point at. The Hindsight plugin's
+    # config may hold a token for a different server (e.g. Hindsight Cloud), so
+    # its token is used only when its apiUrl is the server being called.
     base = os.environ.get("HINDSIGHT_API_URL", "http://localhost:8888").rstrip("/")
     token = os.environ.get("HINDSIGHT_API_TOKEN")
     if not token:
         try:
-            token = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json"))).get("apiToken")
+            cfg = json.load(open(os.path.expanduser("~/.hindsight/coding-agent.json")))
         except (OSError, ValueError):
-            token = None
+            cfg = {}
+        if str(cfg.get("apiUrl", "")).rstrip("/") == base:
+            token = cfg.get("apiToken")
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"

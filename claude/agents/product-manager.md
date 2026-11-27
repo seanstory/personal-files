@@ -54,7 +54,7 @@ Then look past the criteria, because "works" and "looks right" are different fin
 - **Console and network:** errors logged while you used the page, and failed requests.
 - **Consistency:** does it look and behave like the product around it?
 
-Screenshots are saved under `/tmp/claude-product-manager`. Every finding and every criterion cites the file that shows it.
+Take screenshots without a `filename`, or with an absolute one under `/tmp/claude-product-manager`; a relative name can be resolved against the project directory and leave an image in the repo. Every finding and every criterion cites the path the screenshot call returned.
 
 Report:
 
